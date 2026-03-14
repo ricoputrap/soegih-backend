@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum WalletType {
+  cash
+  bank
+  e_wallet
+  other
+
+  @@map("wallet_type")
+}
+
+enum CategoryType {
+  expense
+  income
+
+  @@map("category_type")
+}
+
+enum TransactionType {
+  expense
+  income
+  transfer
+
+  @@map("transaction_type")
+}
+
+// ============================================================================
+// MODELS
+// ============================================================================
+
+/// User model - synced from Supabase Auth
+model User {
+  id        String   @id
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Relations
+  wallets     Wallet[]
+  categories  Category[]
+
+  @@map("users")
+}
+
+/// Wallet model - represents a user's wallet (cash, bank account, e-wallet, etc.)
+model Wallet {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  name      String
+  balance   Decimal  @default(0) @db.Decimal(15, 2)
+  type      WalletType
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Relations
+  user     User     @relation(fields: [userId], references: [id])
+  postings Posting[]
+
+  // Unique constraint: per user, wallet name is unique per type (for non-deleted records)
+  @@unique([userId, name, type], where: { deletedAt: null })
+  @@index([userId])
+  @@map("wallets")
+}
+
+/// Category model - expense/income categories for transactions
+model Category {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  name        String
+  description String?
+  type        CategoryType
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  // Relations
+  user              User              @relation(fields: [userId], references: [id])
+  transactionEvents TransactionEvent[]
+
+  // Unique constraint: per user, category name is unique per type (for non-deleted records)
+  @@unique([userId, name, type], where: { deletedAt: null })
+  @@index([userId])
+  @@map("categories")
+}
+
+/// TransactionEvent model - represents a financial event (expense, income, or transfer)
+model TransactionEvent {
+  id          String   @id @default(uuid())
+  type        TransactionType
+  note        String?
+  categoryId  String?  @map("category_id")
+  occurredAt  DateTime @map("occurred_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  // Relations
+  category Category? @relation(fields: [categoryId], references: [id])
+  postings Posting[]
+
+  @@index([categoryId])
+  @@index([occurredAt])
+  @@map("transaction_events")
+}
+
+/// Posting model - double-entry accounting: links a transaction to a wallet with signed amount
+model Posting {
+  id        String   @id @default(uuid())
+  eventId   String   @map("event_id")
+  walletId  String   @map("wallet_id")
+  amount    Decimal  @db.Decimal(15, 2)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Relations
+  event  TransactionEvent @relation(fields: [eventId], references: [id])
+  wallet Wallet           @relation(fields: [walletId], references: [id])
+
+  @@index([eventId])
+  @@index([walletId])
+  @@map("postings")
+}
