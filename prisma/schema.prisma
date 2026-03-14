@@ -69,7 +69,7 @@ model Wallet {
   deletedAt DateTime? @map("deleted_at")
 
   // Relations
-  user     User     @relation(fields: [userId], references: [id])
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postings Posting[]
 
   // Unique constraint: per user, wallet name is unique per type (for non-deleted records)
@@ -90,7 +90,7 @@ model Category {
   deletedAt   DateTime? @map("deleted_at")
 
   // Relations
-  user              User              @relation(fields: [userId], references: [id])
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   transactionEvents TransactionEvent[]
 
   // Unique constraint: per user, category name is unique per type (for non-deleted records)
@@ -111,7 +111,7 @@ model TransactionEvent {
   deletedAt   DateTime? @map("deleted_at")
 
   // Relations
-  category Category? @relation(fields: [categoryId], references: [id])
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   postings Posting[]
 
   @@index([categoryId])
@@ -130,8 +130,8 @@ model Posting {
   deletedAt DateTime? @map("deleted_at")
 
   // Relations
-  event  TransactionEvent @relation(fields: [eventId], references: [id])
-  wallet Wallet           @relation(fields: [walletId], references: [id])
+  event  TransactionEvent @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  wallet Wallet           @relation(fields: [walletId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([eventId])
   @@index([walletId])
