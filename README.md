@@ -1,98 +1,203 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Soegih Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A personal finance management API built with **NestJS** and **TypeScript**. Soegih helps users track wallets, transactions, and expenses with support for natural language transaction entry via AI.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **Wallet Management** — Create and manage multiple wallets (cash, bank, e-wallet, etc.)
+- **Categories** — Organize transactions by expense/income categories
+- **Transactions** — Record expenses, income, and transfers with detailed tracking
+- **Dashboard** — View net worth, monthly totals, and expense distribution
+- **AI Chat Interface** — Parse natural language into structured transactions for confirmation
+- **Authentication** — Supabase Auth with JWT-based session management
+- **Soft Deletion** — All data is soft-deleted for audit trails
+- **Server-Side Pagination** — Efficient transaction listing with search and sorting
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech Stack
 
-## Project setup
+- **Framework:** NestJS with TypeScript
+- **ORM:** Prisma
+- **Database:** PostgreSQL via Supabase
+- **Auth:** Supabase Auth
+- **Logging:** Pino (structured JSON logging)
+- **Deployment:** Docker Compose on VPS with Caddy reverse proxy
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and pnpm
+- PostgreSQL via Supabase (account and project)
+- Environment variables configured (see `.env.example`)
+
+### Installation
 
 ```bash
-$ pnpm install
+# Install dependencies
+pnpm install
 ```
 
-## Compile and run the project
+### Environment Setup
+
+Copy `.env.example` to `.env.local` and configure:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+DATABASE_URL=postgresql://...
+SUPABASE_URL=https://....supabase.co
+SUPABASE_SERVICE_KEY=...
+JWT_SECRET=...
 ```
 
-## Run tests
+See [docs/README.md](docs/README.md) for the complete environment variables list.
+
+### Running the Application
 
 ```bash
-# unit tests
-$ pnpm run test
+# Development mode (watch)
+pnpm run start:dev
 
-# e2e tests
-$ pnpm run test:e2e
+# Production mode
+pnpm run start:prod
 
-# test coverage
-$ pnpm run test:cov
+# Run once
+pnpm run start
+```
+
+The API runs on `http://localhost:3000`.
+
+### Database Migrations
+
+```bash
+# Create a migration
+pnpm exec prisma migrate dev --name <migration_name>
+
+# Apply migrations
+pnpm exec prisma migrate deploy
+
+# View database in studio
+pnpm exec prisma studio
+```
+
+## Testing
+
+```bash
+# Unit tests
+pnpm run test
+
+# Watch mode
+pnpm run test:watch
+
+# Coverage
+pnpm run test:cov
+
+# E2E tests (requires running backend)
+pnpm run test:e2e
+```
+
+## API Documentation
+
+See [docs/project_spec.md](docs/project_spec.md) for:
+
+- **API Endpoints** — Full list of routes and request/response schemas
+- **Data Schema** — Entity relationships and database structure
+- **Auth Flow** — JWT verification and Supabase integration
+- **Naming Conventions** — CamelCase, snake_case, PascalCase usage
+
+### Key Endpoints
+
+```
+POST   /api/v1/auth/signup              -- Register new user
+POST   /api/v1/auth/login               -- Login
+POST   /api/v1/auth/logout              -- Logout
+GET    /api/v1/auth/me                  -- Current user profile
+
+GET    /api/v1/wallets                  -- List wallets
+POST   /api/v1/wallets                  -- Create wallet
+PATCH  /api/v1/wallets/:id              -- Update wallet
+
+GET    /api/v1/categories               -- List categories
+POST   /api/v1/categories               -- Create category
+
+GET    /api/v1/transactions             -- List transactions (paginated, server-side sort/search)
+POST   /api/v1/transactions             -- Create transaction
+
+GET    /api/v1/dashboard                -- Dashboard metrics (net worth, monthly totals)
+
+POST   /api/v1/ai/chat                  -- AI natural language transaction parsing
+POST   /api/v1/ai/chat/confirm          -- Confirm and save parsed transaction
+```
+
+## Architecture
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for:
+
+- System context and deployment topology
+- Module structure
+- Data flow diagrams
+- Integration patterns
+
+## Project Structure
+
+```
+src/
+├── modules/
+│   ├── auth/              # Authentication (Supabase, JWT)
+│   ├── wallet/            # Wallet CRUD
+│   ├── category/          # Category CRUD
+│   ├── transaction/       # Transaction CRUD with pagination
+│   ├── dashboard/         # Dashboard metrics
+│   └── ai/                # AI chat integration
+├── common/                # Shared guards, filters, interceptors
+├── prisma/                # Database schema and migrations
+└── main.ts                # App bootstrap
+```
+
+## Development Guide
+
+### Naming Conventions
+
+| Layer            | Convention         | Example                    |
+| ---------------- | ------------------ | -------------------------- |
+| Database columns | `snake_case`       | `created_at`, `wallet_id`  |
+| API JSON fields  | `snake_case`       | `{"created_at": "..."}`    |
+| NestJS files     | `kebab-case`       | `wallet.service.ts`        |
+| Classes          | `PascalCase`       | `WalletService`            |
+| Constants        | `UPPER_SNAKE_CASE` | `MAX_RETRY_ATTEMPTS`       |
+
+### Code Generation
+
+Use NestJS CLI for boilerplate:
+
+```bash
+# Generate a module with controller and service
+nest g module features/wallet
+nest g service features/wallet/services/wallet
+nest g controller features/wallet/controllers/wallet
+
+# Generate data models and DTOs
+nest g class features/wallet/models/wallet.model
+nest g class features/wallet/dtos/create-wallet.dto
 ```
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The backend runs in Docker Compose on a VPS with Caddy for HTTPS and routing:
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Build and run (VPS)
+docker-compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The `soegih-ai` FastAPI service runs in the same Docker Compose stack.
 
-## Resources
+## Documentation
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- [docs/README.md](docs/README.md) — Documentation index
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — System design and module structure
+- [docs/project_spec.md](docs/project_spec.md) — Complete project specification
+- [docs/CHANGELOG.md](docs/CHANGELOG.md) — Implementation progress and changes
+- [CLAUDE.md](CLAUDE.md) — Development conventions and workflow
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
