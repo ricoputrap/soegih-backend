@@ -9,7 +9,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ============================================================================
@@ -74,8 +73,8 @@ model Wallet {
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postings Posting[]
 
-  // Unique constraint: per user, wallet name is unique per type (for non-deleted records)
-  @@unique([userId, name, type], where: { deletedAt: null })
+  // Unique constraint: per user, wallet name is unique per type
+  @@unique([userId, name, type])
   @@index([userId])
   @@map("wallets")
 }
@@ -95,8 +94,8 @@ model Category {
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   transactionEvents TransactionEvent[]
 
-  // Unique constraint: per user, category name is unique per type (for non-deleted records)
-  @@unique([userId, name, type], where: { deletedAt: null })
+  // Unique constraint: per user, category name is unique per type
+  @@unique([userId, name, type])
   @@index([userId])
   @@map("categories")
 }
