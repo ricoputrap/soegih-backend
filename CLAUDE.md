@@ -69,28 +69,58 @@ Follow these exactly (from project_spec.md section 8):
 | Layer                | Convention   | Example                 |
 | -------------------- | ------------ | ----------------------- |
 | API JSON             | `snake_case` | `{"created_at": "..."}` |
-| React components     | `PascalCase` | `WalletCard.tsx`        |
-| React non-components | `kebab-case` | `use-wallet.ts`         |
+| TypeScript classes   | `PascalCase` | `WalletService.ts`      |
+| Functions/variables  | `camelCase`  | `getUserBalance()`      |
+| Constants            | `UPPER_SNAKE_CASE` | `MAX_RETRY_ATTEMPTS` |
 
 ## Code Organization
 
 - Follow the feature module structure in project_spec.md
 - Each feature is isolated and self-contained
 
-## Frontend Design Approach
+## NestJS CLI Usage
 
-**Use the `/frontend-design` skill for all user-facing frontend modules** to create distinctive, production-grade UI components. This ensures professional, accessible, and responsive interfaces from the start.
+**Use NestJS CLI commands whenever possible** for code generation and scaffolding. This ensures consistency with the framework conventions and reduces manual boilerplate.
 
-**When implementing frontend tasks:**
+Common commands:
 
-- Invoke `/frontend-design` skill to design and build UI components
+```bash
+# Generate a new module with controller and service
+nest g module features/wallet
 
-The skill handles:
+# Generate controller, service, repository within a module
+nest g controller features/wallet/controllers/wallet
+nest g service features/wallet/services/wallet
+nest g service features/wallet/repositories/wallet
 
-- Component design and composition
-- Styling and visual polish
-- Accessibility and responsiveness
-- Interaction patterns
+# Generate data model/class
+nest g class features/wallet/models/wallet.model
+
+# Generate DTO (Data Transfer Object)
+nest g class features/wallet/dtos/create-wallet.dto
+```
+
+- Always use `nest generate` (or `nest g`) for new modules, controllers, services, and classes
+- Generated files follow NestJS conventions automatically
+- Modify generated files as needed for business logic
+
+## API & Service Design
+
+**Follow the feature module structure** to keep backend services organized and maintainable:
+
+- **Controllers** — Handle HTTP request routing and validation
+- **Services** — Contain business logic and domain operations
+- **Repositories** — Data access layer with database queries
+- **Types/Interfaces** — Define request/response contracts
+- **Middleware** — Cross-cutting concerns (auth, logging, error handling)
+
+**API Design Principles:**
+
+- REST conventions for endpoints (GET, POST, PUT, DELETE, PATCH)
+- Consistent error response format
+- Request/response validation (schemas, type-safety)
+- Proper HTTP status codes
+- API versioning strategy if applicable
 
 ## Test-Driven Development
 
