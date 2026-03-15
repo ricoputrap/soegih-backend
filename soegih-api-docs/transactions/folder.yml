@@ -1,0 +1,3 @@
+info:
+  name: Transactions
+  description: API endpoints for managing financial transactions (expenses, income, and transfers)
