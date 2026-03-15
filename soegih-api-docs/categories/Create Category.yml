@@ -13,9 +13,9 @@ http:
     type: json
     data: |-
       {
-        "name": "Salary",
+        "name": "Freelance",
         "type": "income",
-        "description": "Gajian"
+        "description": "Freelance"
       }
   auth: inherit
 

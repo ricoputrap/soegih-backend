@@ -551,16 +551,16 @@ List transactions with server-side pagination.
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "type": "expense",
       "note": "Coffee",
-      "categoryId": "...",
-      "occurredAt": "2026-03-15T10:00:00.000Z",
-      "createdAt": "2026-03-15T10:00:00.000Z",
-      "updatedAt": "2026-03-15T10:00:00.000Z",
-      "deletedAt": null,
+      "category_id": "...",
+      "occurred_at": "2026-03-15T10:00:00.000Z",
+      "created_at": "2026-03-15T10:00:00.000Z",
+      "updated_at": "2026-03-15T10:00:00.000Z",
+      "deleted_at": null,
       "category": { "id": "...", "name": "Food", "type": "expense" },
       "postings": [
         {
           "id": "...",
-          "walletId": "...",
+          "wallet_id": "...",
           "amount": "-50000",
           "wallet": { "id": "...", "name": "Cash", "type": "cash" }
         }
