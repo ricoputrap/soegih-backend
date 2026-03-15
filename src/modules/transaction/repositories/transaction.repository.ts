@@ -29,11 +29,11 @@ export class TransactionRepository {
     const skip = (page - 1) * limit;
 
     const userWalletFilter: Prisma.TransactionEventWhereInput = {
-      deleted_at: null,
+      deletedAt: null,
       postings: {
         some: {
-          deleted_at: null,
-          wallet: { user_id: userId, deleted_at: null },
+          deletedAt: null,
+          wallet: { userId, deletedAt: null },
         },
       },
     };
@@ -46,20 +46,25 @@ export class TransactionRepository {
       const [year, mon] = month.split('-').map(Number);
       const start = new Date(year, mon - 1, 1);
       const end = new Date(year, mon, 1);
-      userWalletFilter.occurred_at = { gte: start, lt: end };
+      userWalletFilter.occurredAt = { gte: start, lt: end };
     }
+
+    // Map snake_case sort_by to camelCase Prisma field
+    const sortField =
+      sort_by === 'occurred_at'
+        ? 'occurredAt'
+        : sort_by === 'amount'
+          ? 'occurredAt' // amount sort falls back to occurredAt
+          : sort_by;
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.transactionEvent.findMany({
         where: userWalletFilter,
         include: {
-          postings: { where: { deleted_at: null }, include: { wallet: true } },
+          postings: { where: { deletedAt: null }, include: { wallet: true } },
           category: true,
         },
-        orderBy:
-          sort_by !== 'amount'
-            ? { [sort_by]: sort_order }
-            : { occurred_at: sort_order },
+        orderBy: { [sortField]: sort_order },
         skip,
         take: limit,
       }),
@@ -76,16 +81,16 @@ export class TransactionRepository {
     return this.prisma.transactionEvent.findFirst({
       where: {
         id,
-        deleted_at: null,
+        deletedAt: null,
         postings: {
           some: {
-            deleted_at: null,
-            wallet: { user_id: userId, deleted_at: null },
+            deletedAt: null,
+            wallet: { userId, deletedAt: null },
           },
         },
       },
       include: {
-        postings: { where: { deleted_at: null }, include: { wallet: true } },
+        postings: { where: { deletedAt: null }, include: { wallet: true } },
         category: true,
       },
     });
@@ -99,8 +104,8 @@ export class TransactionRepository {
         data: {
           type: dto.type,
           note: dto.note,
-          category_id: dto.category_id,
-          occurred_at: new Date(dto.occurred_at),
+          categoryId: dto.category_id,
+          occurredAt: new Date(dto.occurred_at),
           postings: { create: postings },
         },
         include: {
@@ -112,7 +117,7 @@ export class TransactionRepository {
       // Update wallet balances atomically
       for (const posting of event.postings) {
         await tx.wallet.update({
-          where: { id: posting.wallet_id },
+          where: { id: posting.walletId },
           data: { balance: { increment: posting.amount } },
         });
       }
@@ -129,11 +134,11 @@ export class TransactionRepository {
       where: { id },
       data: {
         note: dto.note,
-        category_id: dto.category_id,
-        occurred_at: dto.occurred_at ? new Date(dto.occurred_at) : undefined,
+        categoryId: dto.category_id,
+        occurredAt: dto.occurred_at ? new Date(dto.occurred_at) : undefined,
       },
       include: {
-        postings: { where: { deleted_at: null }, include: { wallet: true } },
+        postings: { where: { deletedAt: null }, include: { wallet: true } },
         category: true,
       },
     });
@@ -142,8 +147,8 @@ export class TransactionRepository {
   async softDelete(id: string): Promise<void> {
     await this.prisma.$transaction(async (tx) => {
       const event = await tx.transactionEvent.findFirst({
-        where: { id, deleted_at: null },
-        include: { postings: { where: { deleted_at: null } } },
+        where: { id, deletedAt: null },
+        include: { postings: { where: { deletedAt: null } } },
       });
 
       if (!event) return;
@@ -151,7 +156,7 @@ export class TransactionRepository {
       // Reverse wallet balances
       for (const posting of event.postings) {
         await tx.wallet.update({
-          where: { id: posting.wallet_id },
+          where: { id: posting.walletId },
           data: { balance: { decrement: posting.amount } },
         });
       }
@@ -159,11 +164,11 @@ export class TransactionRepository {
       const now = new Date();
       await tx.transactionEvent.update({
         where: { id },
-        data: { deleted_at: now },
+        data: { deletedAt: now },
       });
       await tx.posting.updateMany({
-        where: { event_id: id },
-        data: { deleted_at: now },
+        where: { eventId: id },
+        data: { deletedAt: now },
       });
     });
   }
