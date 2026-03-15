@@ -11,7 +11,8 @@
 2. [Wallets](#wallets)
 3. [Categories](#categories)
 4. [Transactions](#transactions)
-5. [Error Responses](#error-responses)
+5. [Dashboard](#dashboard)
+6. [Error Responses](#error-responses)
 
 ---
 
@@ -653,6 +654,73 @@ Soft-delete a transaction and reverse its wallet balance effects atomically.
 **Errors:**
 - `400 Bad Request` — Invalid UUID format
 - `404 Not Found` — Transaction not found or belongs to a different user
+
+---
+
+## Dashboard
+
+The dashboard provides aggregated financial summaries for the authenticated user.
+
+### GET /dashboard
+
+Get dashboard aggregates including net worth, monthly income/expense, and expense breakdown by category.
+
+**Access:** Authenticated
+
+**Headers:**
+```
+Authorization: Bearer <jwt-token>
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Default | Description              |
+|-----------|--------|---------|--------------------------|
+| `month`   | string | current | Month in `YYYY-MM` format |
+
+**Response:** `200 OK`
+```json
+{
+  "net_worth": 6500.50,
+  "monthly_income": 5000.00,
+  "monthly_expense": 1250.75,
+  "month": "2026-03",
+  "expense_by_category": [
+    {
+      "category_id": "c1d2e3f4-g5h6-47i8-j9k0-l1m2n3o4p5q6",
+      "category_name": "Food",
+      "total": 450.50
+    },
+    {
+      "category_id": "e3f4g5h6-i7j8-49k0-l1m2-n3o4p5q6r7s8",
+      "category_name": "Transport",
+      "total": 150.25
+    }
+  ]
+}
+```
+
+**Field Descriptions:**
+- `net_worth` — Sum of all wallet balances (in current month or all-time)
+- `monthly_income` — Total income postings for the specified month
+- `monthly_expense` — Total expense postings for the specified month
+- `month` — The month being queried (in `YYYY-MM` format)
+- `expense_by_category` — Array of expense totals grouped by category, sorted by amount descending
+
+**Example Queries:**
+```bash
+# Get dashboard for current month
+curl "http://localhost:3000/api/v1/dashboard" \
+  -H "Authorization: Bearer $TOKEN"
+
+# Get dashboard for a specific month
+curl "http://localhost:3000/api/v1/dashboard?month=2026-02" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Errors:**
+- `400 Bad Request` — Invalid month format (must be `YYYY-MM`)
+- `401 Unauthorized` — Missing or invalid token
 
 ---
 
