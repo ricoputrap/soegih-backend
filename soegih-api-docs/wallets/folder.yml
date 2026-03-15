@@ -1,0 +1,3 @@
+info:
+  name: Wallets
+  description: Wallet management endpoints - create, read, update, and delete wallets

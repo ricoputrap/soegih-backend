@@ -1,0 +1,18 @@
+info:
+  name: Delete Wallet
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{base_url}}/api/{{api_version}}/wallets/3aa1b352-916f-498b-9117-a4221546ea6f"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjViZjA3OGJhLTQ4YjYtNDIzMy04NjNlLTA5YjI5ZTIyOTA4NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Zja2d0a2Voa2tnZmdjdWp4emRwLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI0OTI5YWI5NS02MzFjLTRjN2MtOWJlZi05ZmE2NDIwMDhiZjUiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzczNTU3OTA2LCJpYXQiOjE3NzM1NTQzMDYsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbF92ZXJpZmllZCI6dHJ1ZX0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NzM1NTQzMDZ9XSwic2Vzc2lvbl9pZCI6IjJiMjUxOWFiLTliYzYtNDFmZS1hNjAwLTcyMjJiM2MwNGE4OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.zgwVDCXk7x0-T2sJ-sztpk-5dJJPNFzuD9RCSvkXiDvV6TgVenFTS4ugSwRc3dmF8NkccabH8XjddhzXZeEY_A
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

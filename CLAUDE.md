@@ -186,12 +186,14 @@ All documentation is kept in sync with implementation:
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — High-level system overview with ASCII diagrams; links to actual code
 - **[docs/CHANGELOG.md](docs/CHANGELOG.md)** — Updated per chunk with completed tasks
 - **[docs/implementation_plan_mvp.md](docs/implementation_plan_mvp.md)** — MVP task list; source of task numbers for branch naming
+- **[soegih-api-docs/](soegih-api-docs/)** — Bruno OpenCollection format for API endpoint documentation and testing
 
 ### Documentation Guidelines
 
 All documents in the "docs/" directory should always be updated (if necessary) whenever we made any adjustments in this project.
 
 - **Always update [docs/API.md](docs/API.md) whenever finishing a task/chunk** — Keep API endpoints, request/response formats, and error handling current with implementation changes
+- **Always add/update endpoint files in [soegih-api-docs/](soegih-api-docs/)** whenever building or updating API endpoints — Keep request/response examples synchronized with implementation
 - Keep **ARCHITECTURE.md** high-level and visual; link to actual files in `/src` rather than duplicating code
 - Use text-based ASCII diagrams for flows, architecture, and entity relationships
 - Focus documentation on "what exists now", not "what will be implemented"
