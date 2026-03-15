@@ -2,6 +2,31 @@
 
 ## [Unreleased]
 
+### Backend — API Response Enhancement: Strip Timestamp Fields (2026-03-15)
+
+**COMPLETE:** Timestamp field removal from all API responses
+
+#### Added
+
+**Timestamp Field Stripping:**
+- Extended `TransformResponseInterceptor` with deny-list filter for `created_at`, `updated_at`, `deleted_at`
+- Filter runs after snake_case conversion, catching both camelCase and snake_case inputs
+- Applied recursively to all nested objects and arrays
+- No controller/service changes needed — applies to all current and future endpoints
+
+#### Changed
+
+- Updated all example responses in `docs/API.md` to exclude timestamp fields
+- Updated `docs/API.md` Response Format section to document timestamp field removal
+
+#### Technical Details
+
+- Branch: `feat/strip-timestamp-fields`
+- Tests: 3 new tests added to interceptor spec (timestamp stripping in camelCase, snake_case, and nested structures)
+- 2 existing tests updated to remove timestamp field expectations
+
+---
+
 ### Backend — Chunk 4: Category Module (2026-03-15)
 
 **COMPLETE:** Task 11

@@ -16,12 +16,10 @@ describe('TransformResponseInterceptor', () => {
     const input = {
       userId: '123',
       userName: 'John',
-      createdAt: '2026-03-15T10:00:00Z',
     };
     const expected = {
       user_id: '123',
       user_name: 'John',
-      created_at: '2026-03-15T10:00:00Z',
     };
 
     mockCallHandler = { handle: () => of(input) } as CallHandler;
@@ -108,7 +106,6 @@ describe('TransformResponseInterceptor', () => {
     const input = {
       user_id: '123',
       user_name: 'John',
-      created_at: '2026-03-15T10:00:00Z',
     };
 
     mockCallHandler = { handle: () => of(input) } as CallHandler;
@@ -151,6 +148,95 @@ describe('TransformResponseInterceptor', () => {
           {
             posting_id: 'p1',
             wallet_id: 'w1',
+          },
+        ],
+      },
+    };
+
+    mockCallHandler = { handle: () => of(input) } as CallHandler;
+
+    interceptor.intercept(mockCtx, mockCallHandler).subscribe((result) => {
+      expect(result).toEqual(expected);
+      done();
+    });
+  });
+
+  it('should strip createdAt, updatedAt, deletedAt from camelCase objects', (done) => {
+    const input = {
+      userId: '123',
+      userName: 'John',
+      createdAt: '2026-03-15T10:00:00Z',
+      updatedAt: '2026-03-15T11:00:00Z',
+      deletedAt: null,
+    };
+    const expected = {
+      user_id: '123',
+      user_name: 'John',
+    };
+
+    mockCallHandler = { handle: () => of(input) } as CallHandler;
+
+    interceptor.intercept(mockCtx, mockCallHandler).subscribe((result) => {
+      expect(result).toEqual(expected);
+      done();
+    });
+  });
+
+  it('should strip created_at, updated_at, deleted_at from already-snake_case objects', (done) => {
+    const input = {
+      user_id: '123',
+      user_name: 'John',
+      created_at: '2026-03-15T10:00:00Z',
+      updated_at: '2026-03-15T11:00:00Z',
+      deleted_at: null,
+    };
+    const expected = {
+      user_id: '123',
+      user_name: 'John',
+    };
+
+    mockCallHandler = { handle: () => of(input) } as CallHandler;
+
+    interceptor.intercept(mockCtx, mockCallHandler).subscribe((result) => {
+      expect(result).toEqual(expected);
+      done();
+    });
+  });
+
+  it('should strip timestamp fields recursively in nested objects and arrays', (done) => {
+    const input = {
+      userId: '123',
+      createdAt: '2026-03-15T10:00:00Z',
+      transaction: {
+        transactionId: 't1',
+        createdAt: '2026-03-15T10:30:00Z',
+        updatedAt: '2026-03-15T11:00:00Z',
+        postings: [
+          {
+            postingId: 'p1',
+            walletId: 'w1',
+            createdAt: '2026-03-15T10:35:00Z',
+          },
+          {
+            postingId: 'p2',
+            walletId: 'w2',
+            updatedAt: '2026-03-15T11:05:00Z',
+          },
+        ],
+      },
+    };
+    const expected = {
+      user_id: '123',
+      transaction: {
+        transaction_id: 't1',
+        postings: [
+          {
+            posting_id: 'p1',
+            wallet_id: 'w1',
+          },
+          {
+            posting_id: 'p2',
+            wallet_id: 'w2',
           },
         ],
       },

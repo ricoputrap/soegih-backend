@@ -5,36 +5,33 @@
 
 ## Response Format
 
-All API responses use `snake_case` for JSON field names. Responses follow one of these formats:
+All API responses use `snake_case` for JSON field names. Timestamp fields (`created_at`, `updated_at`, `deleted_at`) are automatically stripped from all responses. Responses follow one of these formats:
 
 **Single Object Response:**
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
-  "email": "user@example.com",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T10:30:00Z",
-  "deleted_at": null
+  "email": "user@example.com"
 }
 ```
 
 **Array Response:**
+
 ```json
 [
   {
     "id": "550e8400-e29b-41d4-a716-446655440000",
-    "name": "Cash",
-    "created_at": "2026-03-15T10:30:00Z"
+    "name": "Cash"
   }
 ]
 ```
 
 **Paginated Response:**
+
 ```json
 {
-  "data": [
-    { "id": "...", "name": "..." }
-  ],
+  "data": [{ "id": "...", "name": "..." }],
   "meta": {
     "total": 42,
     "page": 1,
@@ -45,6 +42,7 @@ All API responses use `snake_case` for JSON field names. Responses follow one of
 ```
 
 **Error Response:**
+
 ```json
 {
   "status_code": 400,
@@ -76,6 +74,7 @@ Create a new user account and receive a JWT token.
 **Access:** Public (no auth required)
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -84,6 +83,7 @@ Create a new user account and receive a JWT token.
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -95,6 +95,7 @@ Create a new user account and receive a JWT token.
 ```
 
 **Errors:**
+
 - `409 Conflict` — Email already in use
 - `400 Bad Request` — Invalid email or password format
 
@@ -107,6 +108,7 @@ Authenticate and receive a JWT token.
 **Access:** Public (no auth required)
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -115,6 +117,7 @@ Authenticate and receive a JWT token.
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -126,6 +129,7 @@ Authenticate and receive a JWT token.
 ```
 
 **Errors:**
+
 - `401 Unauthorized` — Invalid email or password
 - `400 Bad Request` — Invalid email or password format
 
@@ -138,11 +142,13 @@ Get the current authenticated user's profile.
 **Access:** Authenticated (requires valid JWT)
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -151,6 +157,7 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Errors:**
+
 - `401 Unauthorized` — Missing or invalid token
 
 ---
@@ -162,11 +169,13 @@ Logout the current user (server-side cleanup).
 **Access:** Authenticated (requires valid JWT)
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "message": "Logged out successfully"
@@ -174,6 +183,7 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Errors:**
+
 - `401 Unauthorized` — Missing or invalid token
 
 ---
@@ -189,6 +199,7 @@ Get all wallets for the authenticated user.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
@@ -196,6 +207,7 @@ Authorization: Bearer <jwt-token>
 **Query Parameters:** None
 
 **Response:** `200 OK`
+
 ```json
 [
   {
@@ -203,25 +215,20 @@ Authorization: Bearer <jwt-token>
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Cash",
     "type": "cash",
-    "balance": "1500.50",
-    "created_at": "2026-03-15T10:30:00Z",
-    "updated_at": "2026-03-15T10:30:00Z",
-    "deleted_at": null
+    "balance": "1500.50"
   },
   {
     "id": "a1b2c3d4-e5f6-47g8-h9i0-j1k2l3m4n5o6",
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Bank Account",
     "type": "bank",
-    "balance": "5000.00",
-    "created_at": "2026-03-15T11:00:00Z",
-    "updated_at": "2026-03-15T11:00:00Z",
-    "deleted_at": null
+    "balance": "5000.00"
   }
 ]
 ```
 
 **Errors:**
+
 - `401 Unauthorized` — Missing or invalid token
 
 ---
@@ -233,37 +240,38 @@ Create a new wallet.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "name": "Savings Account",
   "type": "bank",
-  "balance": 10000.00
+  "balance": 10000.0
 }
 ```
 
 **Wallet Types:** `cash`, `bank`, `e_wallet`, `other`
 
 **Response:** `201 Created`
+
 ```json
 {
   "id": "b2c3d4e5-f6g7-48h9-i0j1-k2l3m4n5o6p7",
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Savings Account",
   "type": "bank",
-  "balance": "10000.00",
-  "created_at": "2026-03-15T12:00:00Z",
-  "updated_at": "2026-03-15T12:00:00Z",
-  "deleted_at": null
+  "balance": "10000.00"
 }
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid wallet type or missing required fields
 - `401 Unauthorized` — Missing or invalid token
 - `409 Conflict` — Wallet with the same name and type already exists for this user
@@ -277,28 +285,29 @@ Get a specific wallet by ID.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **URL Parameters:**
+
 - `id` (UUID) — The wallet ID
 
 **Response:** `200 OK`
+
 ```json
 {
   "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Cash",
   "type": "cash",
-  "balance": "1500.50",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T10:30:00Z",
-  "deleted_at": null
+  "balance": "1500.50"
 }
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Wallet not found or belongs to a different user
@@ -312,38 +321,40 @@ Update a wallet.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **URL Parameters:**
+
 - `id` (UUID) — The wallet ID
 
 **Request Body:** (all fields optional)
+
 ```json
 {
   "name": "Updated Name",
   "type": "bank",
-  "balance": 12000.50
+  "balance": 12000.5
 }
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Updated Name",
   "type": "bank",
-  "balance": "12000.50",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T13:00:00Z",
-  "deleted_at": null
+  "balance": "12000.50"
 }
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format or invalid wallet type
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Wallet not found or belongs to a different user
@@ -358,16 +369,19 @@ Delete a wallet (soft delete).
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **URL Parameters:**
+
 - `id` (UUID) — The wallet ID
 
 **Response:** `204 No Content`
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Wallet not found or belongs to a different user
@@ -385,11 +399,13 @@ Get all categories for the authenticated user.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **Response:** `200 OK`
+
 ```json
 [
   {
@@ -397,25 +413,20 @@ Authorization: Bearer <jwt-token>
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Food",
     "type": "expense",
-    "description": "Groceries and dining",
-    "created_at": "2026-03-15T10:30:00Z",
-    "updated_at": "2026-03-15T10:30:00Z",
-    "deleted_at": null
+    "description": "Groceries and dining"
   },
   {
     "id": "d2e3f4g5-h6i7-48j9-k0l1-m2n3o4p5q6r7",
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Salary",
     "type": "income",
-    "description": "Monthly salary income",
-    "created_at": "2026-03-15T11:00:00Z",
-    "updated_at": "2026-03-15T11:00:00Z",
-    "deleted_at": null
+    "description": "Monthly salary income"
   }
 ]
 ```
 
 **Errors:**
+
 - `401 Unauthorized` — Missing or invalid token
 
 ---
@@ -427,12 +438,14 @@ Create a new category.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **Request Body:**
+
 ```json
 {
   "name": "Transport",
@@ -444,20 +457,19 @@ Content-Type: application/json
 **Category Types:** `expense`, `income`
 
 **Response:** `201 Created`
+
 ```json
 {
   "id": "e3f4g5h6-i7j8-49k0-l1m2-n3o4p5q6r7s8",
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Transport",
   "type": "expense",
-  "description": "Gas, public transport, taxi",
-  "created_at": "2026-03-15T12:00:00Z",
-  "updated_at": "2026-03-15T12:00:00Z",
-  "deleted_at": null
+  "description": "Gas, public transport, taxi"
 }
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid category type or missing required fields
 - `401 Unauthorized` — Missing or invalid token
 - `409 Conflict` — Category with the same name and type already exists for this user
@@ -471,28 +483,29 @@ Get a specific category by ID.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **URL Parameters:**
+
 - `id` (UUID) — The category ID
 
 **Response:** `200 OK`
+
 ```json
 {
   "id": "c1d2e3f4-g5h6-47i8-j9k0-l1m2n3o4p5q6",
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Food",
   "type": "expense",
-  "description": "Groceries and dining",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T10:30:00Z",
-  "deleted_at": null
+  "description": "Groceries and dining"
 }
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Category not found or belongs to a different user
@@ -506,15 +519,18 @@ Update a category.
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json
 ```
 
 **URL Parameters:**
+
 - `id` (UUID) — The category ID
 
 **Request Body:** (all fields optional)
+
 ```json
 {
   "name": "Groceries",
@@ -524,20 +540,19 @@ Content-Type: application/json
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "id": "c1d2e3f4-g5h6-47i8-j9k0-l1m2n3o4p5q6",
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Groceries",
   "type": "expense",
-  "description": "Supermarket and food shopping",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T13:00:00Z",
-  "deleted_at": null
+  "description": "Supermarket and food shopping"
 }
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format or invalid category type
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Category not found or belongs to a different user
@@ -552,16 +567,19 @@ Delete a category (soft delete).
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **URL Parameters:**
+
 - `id` (UUID) — The category ID
 
 **Response:** `204 No Content`
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Category not found or belongs to a different user
@@ -573,6 +591,7 @@ Authorization: Bearer <jwt-token>
 All transaction endpoints require authentication.
 
 **Posting logic (double-entry):**
+
 - `expense` — one posting with negative amount on the specified wallet
 - `income` — one posting with positive amount on the specified wallet
 - `transfer` — two postings: negative on `from_wallet_id`, positive on `to_wallet_id`
@@ -585,16 +604,17 @@ List transactions with server-side pagination.
 
 **Query Parameters:**
 
-| Parameter    | Type   | Default        | Description                                 |
-|--------------|--------|----------------|---------------------------------------------|
-| `page`       | number | `1`            | Page number (min: 1)                        |
-| `limit`      | number | `20`           | Items per page (min: 1, max: 100)           |
-| `sort_by`    | string | `occurred_at`  | Sort field: `occurred_at`, `amount`, `type` |
-| `sort_order` | string | `desc`         | Sort direction: `asc`, `desc`               |
-| `search`     | string | —              | Filter by note (case-insensitive)           |
-| `month`      | string | —              | Filter by month in `YYYY-MM` format         |
+| Parameter    | Type   | Default       | Description                                 |
+| ------------ | ------ | ------------- | ------------------------------------------- |
+| `page`       | number | `1`           | Page number (min: 1)                        |
+| `limit`      | number | `20`          | Items per page (min: 1, max: 100)           |
+| `sort_by`    | string | `occurred_at` | Sort field: `occurred_at`, `amount`, `type` |
+| `sort_order` | string | `desc`        | Sort direction: `asc`, `desc`               |
+| `search`     | string | —             | Filter by note (case-insensitive)           |
+| `month`      | string | —             | Filter by month in `YYYY-MM` format         |
 
 **Response:** `200 OK`
+
 ```json
 {
   "data": [
@@ -604,9 +624,6 @@ List transactions with server-side pagination.
       "note": "Coffee",
       "category_id": "...",
       "occurred_at": "2026-03-15T10:00:00.000Z",
-      "created_at": "2026-03-15T10:00:00.000Z",
-      "updated_at": "2026-03-15T10:00:00.000Z",
-      "deleted_at": null,
       "category": { "id": "...", "name": "Food", "type": "expense" },
       "postings": [
         {
@@ -636,6 +653,7 @@ Get a single transaction by ID.
 **Response:** `200 OK` — transaction object (same shape as items in the list above)
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format
 - `404 Not Found` — Transaction not found or belongs to a different user
 
@@ -646,6 +664,7 @@ Get a single transaction by ID.
 Create a new transaction (expense, income, or transfer). Wallet balances are updated atomically.
 
 **Request Body — expense or income:**
+
 ```json
 {
   "type": "expense",
@@ -658,6 +677,7 @@ Create a new transaction (expense, income, or transfer). Wallet balances are upd
 ```
 
 **Request Body — transfer:**
+
 ```json
 {
   "type": "transfer",
@@ -671,6 +691,7 @@ Create a new transaction (expense, income, or transfer). Wallet balances are upd
 **Response:** `201 Created` — created transaction object
 
 **Errors:**
+
 - `400 Bad Request` — Validation failed (invalid type, missing required fields, non-positive amount)
 
 ---
@@ -680,6 +701,7 @@ Create a new transaction (expense, income, or transfer). Wallet balances are upd
 Update a transaction's note, category, or occurred date. Type and amount cannot be changed after creation.
 
 **Request Body:**
+
 ```json
 {
   "note": "Updated note",
@@ -691,6 +713,7 @@ Update a transaction's note, category, or occurred date. Type and amount cannot 
 **Response:** `200 OK` — updated transaction object
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID or date format
 - `404 Not Found` — Transaction not found or belongs to a different user
 
@@ -703,6 +726,7 @@ Soft-delete a transaction and reverse its wallet balance effects atomically.
 **Response:** `204 No Content`
 
 **Errors:**
+
 - `400 Bad Request` — Invalid UUID format
 - `404 Not Found` — Transaction not found or belongs to a different user
 
@@ -719,28 +743,30 @@ Get dashboard aggregates including net worth, monthly income/expense, and expens
 **Access:** Authenticated
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt-token>
 ```
 
 **Query Parameters:**
 
-| Parameter | Type   | Default | Description              |
-|-----------|--------|---------|--------------------------|
+| Parameter | Type   | Default | Description               |
+| --------- | ------ | ------- | ------------------------- |
 | `month`   | string | current | Month in `YYYY-MM` format |
 
 **Response:** `200 OK`
+
 ```json
 {
-  "net_worth": 6500.50,
-  "monthly_income": 5000.00,
+  "net_worth": 6500.5,
+  "monthly_income": 5000.0,
   "monthly_expense": 1250.75,
   "month": "2026-03",
   "expense_by_category": [
     {
       "category_id": "c1d2e3f4-g5h6-47i8-j9k0-l1m2n3o4p5q6",
       "category_name": "Food",
-      "total": 450.50
+      "total": 450.5
     },
     {
       "category_id": "e3f4g5h6-i7j8-49k0-l1m2-n3o4p5q6r7s8",
@@ -752,6 +778,7 @@ Authorization: Bearer <jwt-token>
 ```
 
 **Field Descriptions:**
+
 - `net_worth` — Sum of all wallet balances (in current month or all-time)
 - `monthly_income` — Total income postings for the specified month
 - `monthly_expense` — Total expense postings for the specified month
@@ -759,6 +786,7 @@ Authorization: Bearer <jwt-token>
 - `expense_by_category` — Array of expense totals grouped by category, sorted by amount descending
 
 **Example Queries:**
+
 ```bash
 # Get dashboard for current month
 curl "http://localhost:3000/api/v1/dashboard" \
@@ -770,6 +798,7 @@ curl "http://localhost:3000/api/v1/dashboard?month=2026-02" \
 ```
 
 **Errors:**
+
 - `400 Bad Request` — Invalid month format (must be `YYYY-MM`)
 - `401 Unauthorized` — Missing or invalid token
 
@@ -777,15 +806,15 @@ curl "http://localhost:3000/api/v1/dashboard?month=2026-02" \
 
 ## Common HTTP Status Codes
 
-| Code | Meaning |
-|------|---------|
-| `200` | OK — Request succeeded |
-| `201` | Created — Resource created successfully |
-| `204` | No Content — Request succeeded with no response body |
-| `400` | Bad Request — Invalid input or validation error |
-| `401` | Unauthorized — Missing or invalid authentication token |
-| `404` | Not Found — Resource not found |
-| `409` | Conflict — Duplicate or conflicting resource |
+| Code  | Meaning                                                        |
+| ----- | -------------------------------------------------------------- |
+| `200` | OK — Request succeeded                                         |
+| `201` | Created — Resource created successfully                        |
+| `204` | No Content — Request succeeded with no response body           |
+| `400` | Bad Request — Invalid input or validation error                |
+| `401` | Unauthorized — Missing or invalid authentication token         |
+| `404` | Not Found — Resource not found                                 |
+| `409` | Conflict — Duplicate or conflicting resource                   |
 | `500` | Internal Server Error — Server encountered an unexpected error |
 
 ---
@@ -803,6 +832,7 @@ curl "http://localhost:3000/api/v1/dashboard?month=2026-02" \
 ### Request Headers
 
 Every authenticated request must include:
+
 ```
 Authorization: Bearer <jwt-token>
 Content-Type: application/json (for POST/PATCH requests)
@@ -822,6 +852,7 @@ Wallet and category listing endpoints return all records (no pagination yet). Pa
 ### Soft Delete Behavior
 
 Deleted resources:
+
 - Are not returned in list endpoints
 - Return `404 Not Found` when accessed by ID
 - Cannot be undeleted
