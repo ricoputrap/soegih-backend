@@ -8,7 +8,7 @@ import {
   IsUUID,
   ValidateIf,
 } from 'class-validator';
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '../../../../generated/prisma/client';
 
 export class CreateTransactionDto {
   @IsEnum(TransactionType)
