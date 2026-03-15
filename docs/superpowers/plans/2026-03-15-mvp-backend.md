@@ -271,7 +271,7 @@ npx prisma studio
 
 Check that all tables exist with correct columns and the unique indexes appear on `wallet` and `category`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add prisma/
