@@ -1103,7 +1103,7 @@ git commit -m "feat(auth): implement signup, login, logout, me endpoints"
 - Create: `src/modules/wallet/dtos/create-wallet.dto.ts`
 - Create: `src/modules/wallet/dtos/update-wallet.dto.ts`
 
-- [ ] **Step 1: Create wallet DTOs**
+- [x] **Step 1: Create wallet DTOs**
 
 ```typescript
 // src/modules/wallet/dtos/create-wallet.dto.ts
@@ -1153,7 +1153,7 @@ export class UpdateWalletDto {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/modules/wallet/dtos/
@@ -1171,7 +1171,7 @@ git commit -m "feat(wallet): add wallet DTOs"
 - Create: `src/modules/wallet/services/wallet.service.ts`
 - Create: `src/modules/wallet/services/wallet.service.spec.ts`
 
-- [ ] **Step 1: Write tests for WalletRepository**
+- [x] **Step 1: Write tests for WalletRepository**
 
 ```typescript
 // src/modules/wallet/repositories/wallet.repository.spec.ts
@@ -1248,13 +1248,13 @@ describe('WalletRepository', () => {
 });
 ```
 
-- [ ] **Step 2: Run test — expect FAIL**
+- [x] **Step 2: Run test — expect FAIL**
 
 ```bash
 pnpm test src/modules/wallet/repositories/wallet.repository.spec.ts
 ```
 
-- [ ] **Step 3: Implement WalletRepository**
+- [x] **Step 3: Implement WalletRepository**
 
 ```typescript
 // src/modules/wallet/repositories/wallet.repository.ts
@@ -1316,7 +1316,7 @@ export class WalletRepository {
 }
 ```
 
-- [ ] **Step 4: Write tests for WalletService**
+- [x] **Step 4: Write tests for WalletService**
 
 ```typescript
 // src/modules/wallet/services/wallet.service.spec.ts
@@ -1398,13 +1398,13 @@ describe('WalletService', () => {
 });
 ```
 
-- [ ] **Step 5: Run test — expect FAIL**
+- [x] **Step 5: Run test — expect FAIL**
 
 ```bash
 pnpm test src/modules/wallet/services/wallet.service.spec.ts
 ```
 
-- [ ] **Step 6: Implement WalletService**
+- [x] **Step 6: Implement WalletService**
 
 ```typescript
 // src/modules/wallet/services/wallet.service.ts
@@ -1461,13 +1461,13 @@ export class WalletService {
 }
 ```
 
-- [ ] **Step 7: Run tests — expect PASS**
+- [x] **Step 7: Run tests — expect PASS**
 
 ```bash
 pnpm test src/modules/wallet/
 ```
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/modules/wallet/repositories/ src/modules/wallet/services/
@@ -1485,7 +1485,7 @@ git commit -m "feat(wallet): add wallet repository and service"
 - Create: `src/modules/wallet/wallet.module.ts`
 - Modify: `src/app.module.ts`
 
-- [ ] **Step 1: Write tests for WalletController**
+- [x] **Step 1: Write tests for WalletController**
 
 ```typescript
 // src/modules/wallet/controllers/wallet.controller.spec.ts
@@ -1544,13 +1544,13 @@ describe('WalletController', () => {
 });
 ```
 
-- [ ] **Step 2: Run test — expect FAIL**
+- [x] **Step 2: Run test — expect FAIL**
 
 ```bash
 pnpm test src/modules/wallet/controllers/wallet.controller.spec.ts
 ```
 
-- [ ] **Step 3: Implement WalletController**
+- [x] **Step 3: Implement WalletController**
 
 ```typescript
 // src/modules/wallet/controllers/wallet.controller.ts
@@ -1616,7 +1616,7 @@ export class WalletController {
 }
 ```
 
-- [ ] **Step 4: Create WalletModule**
+- [x] **Step 4: Create WalletModule**
 
 ```typescript
 // src/modules/wallet/wallet.module.ts
@@ -1632,15 +1632,15 @@ import { WalletRepository } from './repositories/wallet.repository';
 export class WalletModule {}
 ```
 
-- [ ] **Step 5: Register WalletModule in app.module.ts**
+- [x] **Step 5: Register WalletModule in app.module.ts**
 
-- [ ] **Step 6: Run tests — expect PASS**
+- [x] **Step 6: Run tests — expect PASS**
 
 ```bash
 pnpm test
 ```
 
-- [ ] **Step 7: Manual test**
+- [x] **Step 7: Manual test**
 
 ```bash
 # First get a token from login
@@ -1654,12 +1654,14 @@ curl -X POST http://localhost:3000/api/v1/wallets \
 
 Expected: `{ "id": "...", "name": "Cash", ... }`
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/modules/wallet/
 git commit -m "feat(wallet): implement wallet CRUD endpoints"
 ```
+
+> **Status:** ✅ COMPLETE - All 10 tests passing (3 repo + 4 service + 3 controller), code committed to `feat/task-8-wallet`
 
 ---
 
