@@ -14,7 +14,7 @@ export class CategoryService {
     private readonly logger?: PinoLogger,
   ) {}
 
-  findAll(userId: string): Promise<Category[]> {
+  async findAll(userId: string): Promise<Category[]> {
     return this.repo.findAllByUser(userId);
   }
 

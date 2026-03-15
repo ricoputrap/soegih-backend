@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { CategoryType } from '../../../../generated/prisma/client';
 import { CategoryController } from './category.controller';
 import { CategoryService } from '../services/category.service';
 
@@ -36,7 +37,7 @@ describe('CategoryController', () => {
     mockService.create.mockResolvedValueOnce(fakeCategory);
     await controller.create(fakeUser, {
       name: 'Food',
-      type: 'expense' as any,
+      type: CategoryType.expense,
     });
     expect(mockService.create).toHaveBeenCalledWith(
       'u1',

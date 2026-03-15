@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
+import { CategoryType } from '../../../../generated/prisma/client';
 import { CategoryService } from './category.service';
 import { CategoryRepository } from '../repositories/category.repository';
 
@@ -16,13 +17,13 @@ const mockLogger = { setContext: jest.fn(), info: jest.fn(), warn: jest.fn() };
 
 const fakeCategory = {
   id: 'c1',
-  user_id: 'u1',
+  userId: 'u1',
   name: 'Food',
-  type: 'expense',
+  type: CategoryType.expense,
   description: null,
-  created_at: new Date(),
-  updated_at: new Date(),
-  deleted_at: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  deletedAt: null,
 };
 
 describe('CategoryService', () => {
@@ -57,7 +58,7 @@ describe('CategoryService', () => {
     mockRepo.create.mockResolvedValueOnce(fakeCategory);
     const result = await service.create('u1', {
       name: 'Food',
-      type: 'expense' as any,
+      type: CategoryType.expense,
     });
     expect(mockRepo.create).toHaveBeenCalledWith(
       'u1',
