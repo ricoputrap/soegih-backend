@@ -1,0 +1,3 @@
+info:
+  name: Dashboard
+  description: API endpoints for retrieving financial dashboard aggregates and summary data
