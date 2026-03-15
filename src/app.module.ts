@@ -11,6 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TransactionModule } from './modules/transaction/transaction.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { TransactionModule } from './modules/transaction/transaction.module';
     WalletModule,
     CategoryModule,
     TransactionModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [
