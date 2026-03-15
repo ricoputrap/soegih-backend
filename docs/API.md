@@ -10,7 +10,8 @@
 1. [Authentication](#authentication)
 2. [Wallets](#wallets)
 3. [Categories](#categories)
-4. [Error Responses](#error-responses)
+4. [Transactions](#transactions)
+5. [Error Responses](#error-responses)
 
 ---
 
@@ -512,6 +513,146 @@ Authorization: Bearer <jwt-token>
 - `400 Bad Request` — Invalid UUID format
 - `401 Unauthorized` — Missing or invalid token
 - `404 Not Found` — Category not found or belongs to a different user
+
+---
+
+## Transactions
+
+All transaction endpoints require authentication.
+
+**Posting logic (double-entry):**
+- `expense` — one posting with negative amount on the specified wallet
+- `income` — one posting with positive amount on the specified wallet
+- `transfer` — two postings: negative on `from_wallet_id`, positive on `to_wallet_id`
+
+Wallet balances are updated atomically inside a database transaction.
+
+### GET /transactions
+
+List transactions with server-side pagination.
+
+**Query Parameters:**
+
+| Parameter    | Type   | Default        | Description                                 |
+|--------------|--------|----------------|---------------------------------------------|
+| `page`       | number | `1`            | Page number (min: 1)                        |
+| `limit`      | number | `20`           | Items per page (min: 1, max: 100)           |
+| `sort_by`    | string | `occurred_at`  | Sort field: `occurred_at`, `amount`, `type` |
+| `sort_order` | string | `desc`         | Sort direction: `asc`, `desc`               |
+| `search`     | string | —              | Filter by note (case-insensitive)           |
+| `month`      | string | —              | Filter by month in `YYYY-MM` format         |
+
+**Response:** `200 OK`
+```json
+{
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "type": "expense",
+      "note": "Coffee",
+      "categoryId": "...",
+      "occurredAt": "2026-03-15T10:00:00.000Z",
+      "createdAt": "2026-03-15T10:00:00.000Z",
+      "updatedAt": "2026-03-15T10:00:00.000Z",
+      "deletedAt": null,
+      "category": { "id": "...", "name": "Food", "type": "expense" },
+      "postings": [
+        {
+          "id": "...",
+          "walletId": "...",
+          "amount": "-50000",
+          "wallet": { "id": "...", "name": "Cash", "type": "cash" }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "total": 42,
+    "page": 1,
+    "limit": 20,
+    "total_pages": 3
+  }
+}
+```
+
+---
+
+### GET /transactions/:id
+
+Get a single transaction by ID.
+
+**Response:** `200 OK` — transaction object (same shape as items in the list above)
+
+**Errors:**
+- `400 Bad Request` — Invalid UUID format
+- `404 Not Found` — Transaction not found or belongs to a different user
+
+---
+
+### POST /transactions
+
+Create a new transaction (expense, income, or transfer). Wallet balances are updated atomically.
+
+**Request Body — expense or income:**
+```json
+{
+  "type": "expense",
+  "amount": 50000,
+  "occurred_at": "2026-03-15T10:00:00Z",
+  "wallet_id": "550e8400-e29b-41d4-a716-446655440000",
+  "category_id": "550e8400-e29b-41d4-a716-446655440001",
+  "note": "Coffee"
+}
+```
+
+**Request Body — transfer:**
+```json
+{
+  "type": "transfer",
+  "amount": 100000,
+  "occurred_at": "2026-03-15T10:00:00Z",
+  "from_wallet_id": "550e8400-e29b-41d4-a716-446655440000",
+  "to_wallet_id": "550e8400-e29b-41d4-a716-446655440002"
+}
+```
+
+**Response:** `201 Created` — created transaction object
+
+**Errors:**
+- `400 Bad Request` — Validation failed (invalid type, missing required fields, non-positive amount)
+
+---
+
+### PATCH /transactions/:id
+
+Update a transaction's note, category, or occurred date. Type and amount cannot be changed after creation.
+
+**Request Body:**
+```json
+{
+  "note": "Updated note",
+  "category_id": "550e8400-e29b-41d4-a716-446655440001",
+  "occurred_at": "2026-03-16T09:00:00Z"
+}
+```
+
+**Response:** `200 OK` — updated transaction object
+
+**Errors:**
+- `400 Bad Request` — Invalid UUID or date format
+- `404 Not Found` — Transaction not found or belongs to a different user
+
+---
+
+### DELETE /transactions/:id
+
+Soft-delete a transaction and reverse its wallet balance effects atomically.
+
+**Response:** `204 No Content`
+
+**Errors:**
+- `400 Bad Request` — Invalid UUID format
+- `404 Not Found` — Transaction not found or belongs to a different user
 
 ---
 
