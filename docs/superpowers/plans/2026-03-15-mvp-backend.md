@@ -700,6 +700,8 @@ git commit 8b0c7e4 - feat(auth): add auth DTOs and SupabaseService
 
 ### Task 7: AuthService + AuthController + AuthModule
 
+**Status:** ✅ COMPLETE - All 11 steps completed, tests passing (7 tests total for service + controller)
+
 **Files:**
 
 - Create: `src/modules/auth/services/auth.service.ts`
@@ -709,7 +711,7 @@ git commit 8b0c7e4 - feat(auth): add auth DTOs and SupabaseService
 - Create: `src/modules/auth/auth.module.ts`
 - Modify: `src/app.module.ts`
 
-- [ ] **Step 1: Write tests for AuthService**
+- [x] **Step 1: Write tests for AuthService**
 
 ```typescript
 // src/modules/auth/services/auth.service.spec.ts
@@ -830,13 +832,13 @@ describe('AuthService', () => {
 });
 ```
 
-- [ ] **Step 2: Run test — expect FAIL**
+- [x] **Step 2: Run test — expect FAIL**
 
 ```bash
 pnpm test src/modules/auth/services/auth.service.spec.ts
 ```
 
-- [ ] **Step 3: Implement AuthService**
+- [x] **Step 3: Implement AuthService**
 
 ```typescript
 // src/modules/auth/services/auth.service.ts
@@ -930,13 +932,13 @@ export class AuthService {
 }
 ```
 
-- [ ] **Step 4: Run tests — expect PASS**
+- [x] **Step 4: Run tests — expect PASS**
 
 ```bash
 pnpm test src/modules/auth/services/auth.service.spec.ts
 ```
 
-- [ ] **Step 5: Write test for AuthController**
+- [x] **Step 5: Write test for AuthController**
 
 ```typescript
 // src/modules/auth/controllers/auth.controller.spec.ts
@@ -995,7 +997,7 @@ describe('AuthController', () => {
 });
 ```
 
-- [ ] **Step 6: Implement AuthController**
+- [x] **Step 6: Implement AuthController**
 
 ```typescript
 // src/modules/auth/controllers/auth.controller.ts
@@ -1047,7 +1049,7 @@ export class AuthController {
 }
 ```
 
-- [ ] **Step 7: Create AuthModule**
+- [x] **Step 7: Create AuthModule**
 
 ```typescript
 // src/modules/auth/auth.module.ts
@@ -1063,17 +1065,17 @@ import { SupabaseService } from './services/supabase.service';
 export class AuthModule {}
 ```
 
-- [ ] **Step 8: Register AuthModule in app.module.ts**
+- [x] **Step 8: Register AuthModule in app.module.ts**
 
 Add `AuthModule` to the `imports` array in `src/app.module.ts`.
 
-- [ ] **Step 9: Run all tests**
+- [x] **Step 9: Run all tests**
 
 ```bash
 pnpm test
 ```
 
-- [ ] **Step 10: Manual test (requires Supabase credentials in .env)**
+- [x] **Step 10: Manual test (requires Supabase credentials in .env)**
 
 ```bash
 curl -X POST http://localhost:3000/api/v1/auth/signup \
@@ -1083,7 +1085,7 @@ curl -X POST http://localhost:3000/api/v1/auth/signup \
 
 Expected: `{ "token": "...", "user": { "id": "...", "email": "..." } }`
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 git add src/modules/auth/

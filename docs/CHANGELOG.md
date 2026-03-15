@@ -4,7 +4,7 @@
 
 ### Backend — Chunk 2: Auth Module (2026-03-15)
 
-**COMPLETE:** Tasks 5, 6
+**COMPLETE:** Tasks 5, 6, 7
 
 #### Added
 
@@ -20,12 +20,23 @@
 - SupabaseService with admin client and signInWithPassword method
 - 2 unit tests verifying service initialization and admin client exposure
 
+**Task 7: AuthService + AuthController + AuthModule**
+- AuthService with signup, login, and logout methods
+- Full Supabase Auth integration with local DB user sync
+- SignupDto/LoginDto validation and error handling
+- AuthController with endpoints: POST /signup, POST /login, POST /logout, GET /me
+- AuthModule bundling all auth components
+- 7 unit tests (4 service + 3 controller) with full mock coverage
+- Optional PinoLogger injection to support testing without logging infrastructure
+
 #### Technical Details
 
 - Task 5 Branch: `feat/task-5-jwt-guard` | Commit: `118874b`
 - Task 6 Branch: `feat/task-6-auth-dtos-supabase` | Commit: `8b0c7e4`
-- Tests: All 6 tests passing (4 + 2)
+- Task 7 Branch: `feat/task-7-auth-service-controller` | Current session
+- Tests: All 18 tests passing (4 + 2 + 7 + 5 from infrastructure)
 - TDD approach: Red → Green → Refactor cycle followed for all tasks
+- Fixed Prisma schema moduleFormat for compatibility with ts-jest
 
 ---
 
