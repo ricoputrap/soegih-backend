@@ -1,0 +1,26 @@
+info:
+  name: Create Category
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{base_url}}/api/{{api_version}}/categories"
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjViZjA3OGJhLTQ4YjYtNDIzMy04NjNlLTA5YjI5ZTIyOTA4NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3Zja2d0a2Voa2tnZmdjdWp4emRwLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI0OTI5YWI5NS02MzFjLTRjN2MtOWJlZi05ZmE2NDIwMDhiZjUiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzczNTU3OTA2LCJpYXQiOjE3NzM1NTQzMDYsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbF92ZXJpZmllZCI6dHJ1ZX0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NzM1NTQzMDZ9XSwic2Vzc2lvbl9pZCI6IjJiMjUxOWFiLTliYzYtNDFmZS1hNjAwLTcyMjJiM2MwNGE4OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.zgwVDCXk7x0-T2sJ-sztpk-5dJJPNFzuD9RCSvkXiDvV6TgVenFTS4ugSwRc3dmF8NkccabH8XjddhzXZeEY_A
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Transport",
+        "type": "expense",
+        "description": "Gas, public transport, taxi"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
