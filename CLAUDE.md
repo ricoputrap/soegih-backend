@@ -130,6 +130,23 @@ nest g class features/wallet/dtos/create-wallet.dto
 - Test coverage should reflect criticality (auth, transactions are high-priority)
 - Run tests before committing
 
+## Verification Before Completion
+
+Before committing and pushing work, always run the following 3 commands to verify correctness:
+
+```bash
+pnpm test          # Run all tests
+pnpm build         # Build the project
+pnpm start:dev     # Start dev server (verify it starts without errors)
+```
+
+This ensures:
+- All tests pass
+- Code compiles/builds successfully
+- Dev server starts without errors
+
+Only commit and open a PR after all three commands succeed.
+
 ## Commit Convention
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
