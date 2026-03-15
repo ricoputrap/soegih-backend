@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuthModule } from './modules/auth/auth.module';
 import { WalletModule } from './modules/wallet/wallet.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     PrismaModule,
     AuthModule,
     WalletModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [
