@@ -14,11 +14,11 @@ http:
     data: |-
       {
         "type": "transfer",
-        "from_wallet_id": "550e8400-e29b-41d4-a716-446655440000",
-        "to_wallet_id": "660f9511-f40c-52e5-b827-557766551111",
+        "from_wallet_id": "3b7abb5c-33b0-42f7-a527-ca0cbc056c0f",
+        "to_wallet_id": "85cf8005-2011-48c5-8e50-d4cb0ba4b420",
         "amount": 1000.00,
         "occurred_at": "2026-03-15T10:15:00Z",
-        "note": "Transfer to savings account"
+        "note": "Transfer to 2nd bank"
       }
   auth: inherit
 

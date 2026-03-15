@@ -13,9 +13,9 @@ http:
     type: json
     data: |-
       {
-        "name": "Transport",
-        "type": "expense",
-        "description": "Gas, public transport, taxi"
+        "name": "Salary",
+        "type": "income",
+        "description": "Gajian"
       }
   auth: inherit
 

@@ -14,8 +14,8 @@ http:
     data: |-
       {
         "type": "expense",
-        "wallet_id": "550e8400-e29b-41d4-a716-446655440000",
-        "category_id": "e2133f83-22cb-4c4c-aa20-d60664a59742",
+        "wallet_id": "3b7abb5c-33b0-42f7-a527-ca0cbc056c0f",
+        "category_id": "e8cc02da-ac8a-434a-a6c6-b85299071712",
         "amount": 45.50,
         "occurred_at": "2026-03-15T14:30:00Z",
         "note": "Lunch at the restaurant"

@@ -13,7 +13,7 @@ http:
     type: json
     data: |-
       {
-        "name": "Jago Utama",
+        "name": "Jago Kedua",
         "type": "bank",
         "balance": 10000.00
       }
