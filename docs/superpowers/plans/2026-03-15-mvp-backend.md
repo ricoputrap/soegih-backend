@@ -668,125 +668,33 @@ git commit 118874b - feat(auth): implement JWT auth guard and decorators
 - Create: `src/modules/auth/services/supabase.service.ts`
 - Create: `src/modules/auth/services/supabase.service.spec.ts`
 
-- [ ] **Step 1: Create DTOs**
+- [x] **Step 1: Create DTOs**
 
-```typescript
-// src/modules/auth/dtos/signup.dto.ts
-import { IsEmail, IsString, MinLength } from 'class-validator';
+Created `SignupDto` and `LoginDto` with email and password validation.
 
-export class SignupDto {
-  @IsEmail()
-  email: string;
+- [x] **Step 2: Write test for SupabaseService**
 
-  @IsString()
-  @MinLength(8)
-  password: string;
-}
-```
+Test file created with 2 test cases.
 
-```typescript
-// src/modules/auth/dtos/login.dto.ts
-import { IsEmail, IsString, MinLength } from 'class-validator';
+- [x] **Step 3: Run test — expect FAIL**
 
-export class LoginDto {
-  @IsEmail()
-  email: string;
+Result: FAIL — module not found (expected, TDD red phase)
 
-  @IsString()
-  @MinLength(8)
-  password: string;
-}
-```
+- [x] **Step 4: Implement SupabaseService**
 
-- [ ] **Step 2: Write test for SupabaseService**
+Implementation provides admin client access and signInWithPassword method.
 
-```typescript
-// src/modules/auth/services/supabase.service.spec.ts
-import { Test } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
-import { SupabaseService } from './supabase.service';
+- [x] **Step 5: Run test — expect PASS**
 
-describe('SupabaseService', () => {
-  let service: SupabaseService;
+Result: PASS — all 2 tests passing
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      providers: [
-        SupabaseService,
-        {
-          provide: ConfigService,
-          useValue: {
-            get: (key: string) => {
-              if (key === 'SUPABASE_URL') return 'http://localhost:54321';
-              if (key === 'SUPABASE_SERVICE_ROLE_KEY') return 'test-key';
-              return null;
-            },
-          },
-        },
-      ],
-    }).compile();
-    service = module.get(SupabaseService);
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('should expose admin client', () => {
-    expect(service.admin).toBeDefined();
-    expect(typeof service.admin.createUser).toBe('function');
-  });
-});
-```
-
-- [ ] **Step 3: Run test — expect FAIL**
+- [x] **Step 6: Commit**
 
 ```bash
-pnpm test src/modules/auth/services/supabase.service.spec.ts
+git commit 8b0c7e4 - feat(auth): add auth DTOs and SupabaseService
 ```
 
-- [ ] **Step 4: Implement SupabaseService**
-
-```typescript
-// src/modules/auth/services/supabase.service.ts
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-
-@Injectable()
-export class SupabaseService {
-  private readonly client: SupabaseClient;
-
-  constructor(private readonly config: ConfigService) {
-    this.client = createClient(
-      this.config.get<string>('SUPABASE_URL')!,
-      this.config.get<string>('SUPABASE_SERVICE_ROLE_KEY')!,
-      { auth: { autoRefreshToken: false, persistSession: false } },
-    );
-  }
-
-  get admin() {
-    return this.client.auth.admin;
-  }
-
-  async signInWithPassword(email: string, password: string) {
-    return this.client.auth.signInWithPassword({ email, password });
-  }
-}
-```
-
-- [ ] **Step 5: Run test — expect PASS**
-
-```bash
-pnpm test src/modules/auth/services/supabase.service.spec.ts
-```
-
-- [ ] **Step 6: Commit**
-
-```bash
-git add src/modules/auth/dtos/ src/modules/auth/services/supabase.service.ts src/modules/auth/services/supabase.service.spec.ts
-git commit -m "feat(auth): add auth DTOs and SupabaseService"
-```
+> **Status:** ✅ COMPLETE - All 2 tests passing, code committed to `feat/task-6-auth-dtos-supabase`
 
 ---
 

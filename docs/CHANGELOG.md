@@ -4,7 +4,7 @@
 
 ### Backend — Chunk 2: Auth Module (2026-03-15)
 
-**COMPLETE:** Task 5
+**COMPLETE:** Tasks 5, 6
 
 #### Added
 
@@ -15,12 +15,17 @@
 - Guard registered globally via APP_GUARD provider
 - 4 unit tests with full coverage (public routes, missing token, Supabase errors, valid token)
 
+**Task 6: Auth DTOs & SupabaseService**
+- SignupDto and LoginDto with email and password validation
+- SupabaseService with admin client and signInWithPassword method
+- 2 unit tests verifying service initialization and admin client exposure
+
 #### Technical Details
 
-- Branch: `feat/task-5-jwt-guard` (feature branch workflow)
-- Commit: `118874b`
-- Tests: All 4 tests passing
-- Testability improvement: Guard accepts optional SupabaseClient parameter for dependency injection
+- Task 5 Branch: `feat/task-5-jwt-guard` | Commit: `118874b`
+- Task 6 Branch: `feat/task-6-auth-dtos-supabase` | Commit: `8b0c7e4`
+- Tests: All 6 tests passing (4 + 2)
+- TDD approach: Red → Green → Refactor cycle followed for all tasks
 
 ---
 

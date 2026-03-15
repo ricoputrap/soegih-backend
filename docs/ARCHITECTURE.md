@@ -38,6 +38,7 @@
 - **ValidationPipe** — Global request validation with whitelist and type transformation
 - **RequestIdInterceptor** — Request tracing via x-request-id header (UUID fallback)
 - **JwtAuthGuard** (Task 5 ✅) — Supabase JWT verification; skipped via @Public() decorator
+- **SupabaseService** (Task 6 ✅) — Injectable Supabase admin client for auth operations
 - **PrismaModule** — Global database service (auto-connects on init, gracefully disconnects on shutdown)
 - **ConfigModule** — Environment variable management
 - **LoggerModule** (Pino) — Structured logging with request context
@@ -65,6 +66,16 @@ src/
 │       └── request-id.interceptor.ts # Request tracing
 └── modules/
     ├── auth/                         # User signup/login/logout (Task 5-7)
+    │   ├── services/
+    │   │   ├── supabase.service.ts   # Supabase admin client (Task 6)
+    │   │   ├── auth.service.ts       # Auth business logic (Task 7)
+    │   │   └── *.spec.ts             # Unit tests
+    │   ├── controllers/
+    │   │   └── auth.controller.ts    # POST /signup, /login, /logout; GET /me (Task 7)
+    │   ├── dtos/
+    │   │   ├── signup.dto.ts         # SignupDto validation (Task 6)
+    │   │   └── login.dto.ts          # LoginDto validation (Task 6)
+    │   └── auth.module.ts            # Auth module setup (Task 7)
     ├── wallet/                       # Wallet CRUD (Task 8-10)
     ├── category/                     # Category CRUD (Task 11)
     ├── transaction/                  # Transaction CRUD with postings (Task 12-14)
