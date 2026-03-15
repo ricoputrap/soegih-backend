@@ -3,6 +3,57 @@
 **Base URL:** `/api/v1`
 **Authentication:** Bearer token in `Authorization` header (obtained from signup/login)
 
+## Response Format
+
+All API responses use `snake_case` for JSON field names. Responses follow one of these formats:
+
+**Single Object Response:**
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "email": "user@example.com",
+  "created_at": "2026-03-15T10:30:00Z",
+  "updated_at": "2026-03-15T10:30:00Z",
+  "deleted_at": null
+}
+```
+
+**Array Response:**
+```json
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Cash",
+    "created_at": "2026-03-15T10:30:00Z"
+  }
+]
+```
+
+**Paginated Response:**
+```json
+{
+  "data": [
+    { "id": "...", "name": "..." }
+  ],
+  "meta": {
+    "total": 42,
+    "page": 1,
+    "limit": 20,
+    "total_pages": 3
+  }
+}
+```
+
+**Error Response:**
+```json
+{
+  "status_code": 400,
+  "message": "Error description",
+  "path": "/api/v1/wallets/invalid-id",
+  "timestamp": "2026-03-15T13:30:00Z"
+}
+```
+
 ---
 
 ## Table of Contents
@@ -724,20 +775,7 @@ curl "http://localhost:3000/api/v1/dashboard?month=2026-02" \
 
 ---
 
-## Error Responses
-
-All errors follow this standard format:
-
-```json
-{
-  "status_code": 400,
-  "message": "Error description",
-  "path": "/api/v1/wallets/invalid-id",
-  "timestamp": "2026-03-15T13:30:00Z"
-}
-```
-
-### Common HTTP Status Codes
+## Common HTTP Status Codes
 
 | Code | Meaning |
 |------|---------|
