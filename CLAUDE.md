@@ -191,6 +191,7 @@ All documentation is kept in sync with implementation:
 
 All documents in the "docs/" directory should always be updated (if necessary) whenever we made any adjustments in this project.
 
+- **Always update [docs/API.md](docs/API.md) whenever finishing a task/chunk** — Keep API endpoints, request/response formats, and error handling current with implementation changes
 - Keep **ARCHITECTURE.md** high-level and visual; link to actual files in `/src` rather than duplicating code
 - Use text-based ASCII diagrams for flows, architecture, and entity relationships
 - Focus documentation on "what exists now", not "what will be implemented"
