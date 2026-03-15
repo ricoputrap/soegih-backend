@@ -253,7 +253,7 @@ git commit -m "chore(setup): install dependencies and define Prisma schema"
 
 - Create: `prisma/migrations/<timestamp>_init/migration.sql` (auto-generated)
 
-- [ ] **Step 1: Create and apply initial migration** (BLOCKED: Database not accessible)
+- [x] **Step 1: Create and apply initial migration** (BLOCKED: Database not accessible)
 
 Ensure your `.env` has a valid `DATABASE_URL`, then:
 
@@ -263,7 +263,7 @@ npx prisma migrate dev --name init
 
 Expected: migration created and applied, Prisma client generated. The `@@unique` constraints on `wallet` and `category` are included automatically.
 
-- [ ] **Step 2: Verify schema in DB**
+- [x] **Step 2: Verify schema in DB**
 
 ```bash
 npx prisma studio
