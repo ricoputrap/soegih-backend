@@ -197,3 +197,14 @@ All documents in the "docs/" directory should always be updated (if necessary) w
 - Keep **ARCHITECTURE.md** high-level and visual; link to actual files in `/src` rather than duplicating code
 - Use text-based ASCII diagrams for flows, architecture, and entity relationships
 - Focus documentation on "what exists now", not "what will be implemented"
+
+### Bruno API Documentation Standards
+
+When creating or updating endpoint files in `soegih-api-docs/`:
+
+- **Authorization headers**: For all authenticated endpoints, include default `Authorization: Bearer <token>` header. This allows testers to easily identify which endpoints require auth and provides a template for token replacement.
+- **Wallet types**: Use valid values: `cash`, `bank`, `e_wallet`, `other`
+- **Category types**: Use valid values: `expense`, `income`
+- **Request body examples**: Use realistic sample data that matches the actual API expectations
+- **Environment variables**: Use `{{base_url}}` and `{{api_version}}` for portability across environments
+- **Sequence numbers**: Assign sequential `seq` values within each feature folder to maintain logical test execution order
