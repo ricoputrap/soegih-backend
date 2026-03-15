@@ -76,7 +76,17 @@ src/
     │   │   ├── signup.dto.ts         # SignupDto validation (Task 6)
     │   │   └── login.dto.ts          # LoginDto validation (Task 6)
     │   └── auth.module.ts            # Auth module setup (Task 7)
-    ├── wallet/                       # Wallet CRUD (Task 8-10)
+    ├── wallet/                       # Wallet CRUD (Task 8-10) ✅
+    │   ├── controllers/
+    │   │   └── wallet.controller.ts  # GET/POST/PATCH/DELETE /wallets
+    │   ├── services/
+    │   │   └── wallet.service.ts     # Wallet business logic (soft-delete, scoped queries)
+    │   ├── repositories/
+    │   │   └── wallet.repository.ts  # Prisma queries with userId scoping and soft-delete
+    │   ├── dtos/
+    │   │   ├── create-wallet.dto.ts  # CreateWalletDto validation
+    │   │   └── update-wallet.dto.ts  # UpdateWalletDto validation
+    │   └── wallet.module.ts          # WalletModule
     ├── category/                     # Category CRUD (Task 11)
     ├── transaction/                  # Transaction CRUD with postings (Task 12-14)
     ├── dashboard/                    # Aggregates (Task 15)

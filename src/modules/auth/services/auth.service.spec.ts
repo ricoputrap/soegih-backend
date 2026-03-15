@@ -7,9 +7,7 @@ import { ConflictException, UnauthorizedException } from '@nestjs/common';
 
 const mockSupabase = {
   admin: {
-    auth: {
-      createUser: jest.fn(),
-    },
+    createUser: jest.fn(),
   },
   signInWithPassword: jest.fn(),
 };
@@ -43,7 +41,7 @@ describe('AuthService', () => {
     it('creates user in Supabase and syncs to local DB', async () => {
       const fakeUser = { id: 'supabase-uuid', email: 'a@b.com' };
       const fakeSession = { access_token: 'jwt-token' };
-      mockSupabase.admin.auth.createUser.mockResolvedValueOnce({
+      mockSupabase.admin.createUser.mockResolvedValueOnce({
         data: { user: fakeUser },
         error: null,
       });
@@ -61,7 +59,7 @@ describe('AuthService', () => {
         password: 'password123',
       });
 
-      expect(mockSupabase.admin.auth.createUser).toHaveBeenCalledWith({
+      expect(mockSupabase.admin.createUser).toHaveBeenCalledWith({
         email: 'a@b.com',
         password: 'password123',
         email_confirm: true,
@@ -71,7 +69,7 @@ describe('AuthService', () => {
     });
 
     it('throws ConflictException when Supabase returns user already registered', async () => {
-      mockSupabase.admin.auth.createUser.mockResolvedValueOnce({
+      mockSupabase.admin.createUser.mockResolvedValueOnce({
         data: { user: null },
         error: { message: 'User already registered' },
       });

@@ -2,6 +2,40 @@
 
 ## [Unreleased]
 
+### Backend — Chunk 3: Wallet Module (2026-03-15)
+
+**COMPLETE:** Tasks 8, 9, 10
+
+#### Added
+
+**Task 8: Wallet DTOs**
+- `CreateWalletDto` with name, type (WalletType enum), and balance validation
+- `UpdateWalletDto` with all fields optional
+
+**Task 9: WalletRepository + WalletService**
+- `WalletRepository` with scoped queries (`userId` + `deletedAt: null`), create, update, and soft-delete (name timestamping)
+- `WalletService` with findAll, findOne (NotFoundException), create, update, remove
+- `@Optional()` on PinoLogger injection for testability (matches auth service pattern)
+- 7 unit tests (3 repository + 4 service) with full mock coverage
+
+**Task 10: WalletController + WalletModule**
+- `WalletController` with 5 endpoints: GET/POST /wallets, GET/PATCH/DELETE /wallets/:id
+- `WalletModule` bundling controller, service, and repository
+- Registered WalletModule in AppModule
+
+#### Bug Fixes
+
+- Fixed pre-existing auth service spec mock: `admin.auth.createUser` → `admin.createUser` (matched actual SupabaseService.admin getter)
+
+#### Technical Details
+
+- Branch: `feat/task-8-wallet` | Commit: `95d1c98`
+- Tests: All 28 tests passing (10 new wallet + 18 existing)
+- Prisma imports use `generated/prisma/client` path (not bare `@prisma/client`) for runtime compatibility
+- Schema uses camelCase field names (`userId`, `deletedAt`) mapped to DB snake_case via `@map()`
+
+---
+
 ### Backend — Chunk 2: Auth Module (2026-03-15)
 
 **COMPLETE:** Tasks 5, 6, 7
