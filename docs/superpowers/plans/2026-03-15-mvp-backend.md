@@ -2752,7 +2752,7 @@ git commit -m "feat(transaction): implement transaction CRUD with server-side pa
 - Create: `src/modules/dashboard/dashboard.module.ts`
 - Modify: `src/app.module.ts`
 
-- [ ] **Step 1: Write tests for DashboardService**
+- [x] **Step 1: Write tests for DashboardService**
 
 ```typescript
 // src/modules/dashboard/services/dashboard.service.spec.ts
@@ -2803,13 +2803,13 @@ describe('DashboardService', () => {
 });
 ```
 
-- [ ] **Step 2: Run test — expect FAIL**
+- [x] **Step 2: Run test — expect FAIL**
 
 ```bash
 pnpm test src/modules/dashboard/services/dashboard.service.spec.ts
 ```
 
-- [ ] **Step 3: Implement DashboardService**
+- [x] **Step 3: Implement DashboardService**
 
 ```typescript
 // src/modules/dashboard/services/dashboard.service.ts
@@ -2929,13 +2929,13 @@ export class DashboardService {
 }
 ```
 
-- [ ] **Step 4: Run tests — expect PASS**
+- [x] **Step 4: Run tests — expect PASS**
 
 ```bash
 pnpm test src/modules/dashboard/services/dashboard.service.spec.ts
 ```
 
-- [ ] **Step 5: Write controller test and implement DashboardController**
+- [x] **Step 5: Write controller test and implement DashboardController**
 
 ```typescript
 // src/modules/dashboard/controllers/dashboard.controller.spec.ts
@@ -2999,7 +2999,7 @@ export class DashboardController {
 }
 ```
 
-- [ ] **Step 6: Create DashboardModule and register in app.module.ts**
+- [x] **Step 6: Create DashboardModule and register in app.module.ts**
 
 ```typescript
 // src/modules/dashboard/dashboard.module.ts
@@ -3014,18 +3014,20 @@ import { DashboardService } from './services/dashboard.service';
 export class DashboardModule {}
 ```
 
-- [ ] **Step 7: Run tests**
+- [x] **Step 7: Run tests**
 
 ```bash
 pnpm test
 ```
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/modules/dashboard/
 git commit -m "feat(dashboard): implement dashboard aggregates endpoint"
 ```
+
+> **Status:** ✅ COMPLETE - All 3 tests passing (2 service + 1 controller), code committed to `feat/task-15-dashboard`, API docs updated
 
 ---
 
