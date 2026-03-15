@@ -87,7 +87,17 @@ src/
     │   │   ├── create-wallet.dto.ts  # CreateWalletDto validation
     │   │   └── update-wallet.dto.ts  # UpdateWalletDto validation
     │   └── wallet.module.ts          # WalletModule
-    ├── category/                     # Category CRUD (Task 11)
+    ├── category/                     # Category CRUD (Task 11) ✅
+    │   ├── controllers/
+    │   │   └── category.controller.ts  # GET/POST/PATCH/DELETE /categories
+    │   ├── services/
+    │   │   └── category.service.ts     # Category business logic (soft-delete, scoped queries)
+    │   ├── repositories/
+    │   │   └── category.repository.ts  # Prisma queries with userId scoping and soft-delete
+    │   ├── dtos/
+    │   │   ├── create-category.dto.ts  # CreateCategoryDto validation
+    │   │   └── update-category.dto.ts  # UpdateCategoryDto validation
+    │   └── category.module.ts          # CategoryModule
     ├── transaction/                  # Transaction CRUD with postings (Task 12-14)
     ├── dashboard/                    # Aggregates (Task 15)
     └── ai/                           # FastAPI proxy (Task 16)

@@ -1682,7 +1682,7 @@ git commit -m "feat(wallet): implement wallet CRUD endpoints"
 - Create: `src/modules/category/category.module.ts`
 - Modify: `src/app.module.ts`
 
-- [ ] **Step 1: Create DTOs**
+- [x] **Step 1: Create DTOs**
 
 ```typescript
 // src/modules/category/dtos/create-category.dto.ts
@@ -1724,7 +1724,7 @@ export class UpdateCategoryDto {
 }
 ```
 
-- [ ] **Step 2: Implement CategoryRepository (same pattern as WalletRepository)**
+- [x] **Step 2: Implement CategoryRepository (same pattern as WalletRepository)**
 
 ```typescript
 // src/modules/category/repositories/category.repository.ts
@@ -1785,7 +1785,7 @@ export class CategoryRepository {
 }
 ```
 
-- [ ] **Step 3: Write and run tests for CategoryRepository**
+- [x] **Step 3: Write and run tests for CategoryRepository**
 
 Follow the same pattern as wallet repository tests. Test: `findAllByUser` scopes by `user_id` and `deleted_at: null`, `softDelete` sets `deleted_at` and suffixes `name` with a Unix timestamp.
 
@@ -1795,7 +1795,7 @@ pnpm test src/modules/category/repositories/
 
 Expected: PASS.
 
-- [ ] **Step 4: Implement CategoryService (same pattern as WalletService)**
+- [x] **Step 4: Implement CategoryService (same pattern as WalletService)**
 
 ```typescript
 // src/modules/category/services/category.service.ts
@@ -1852,7 +1852,7 @@ export class CategoryService {
 }
 ```
 
-- [ ] **Step 5: Write and run tests for CategoryService**
+- [x] **Step 5: Write and run tests for CategoryService**
 
 Follow wallet service test pattern. Test: `findOne` throws `NotFoundException` when not found, `create` delegates to repo.
 
@@ -1862,7 +1862,7 @@ pnpm test src/modules/category/services/
 
 Expected: PASS.
 
-- [ ] **Step 6: Implement CategoryController**
+- [x] **Step 6: Implement CategoryController**
 
 ```typescript
 // src/modules/category/controllers/category.controller.ts
@@ -1928,7 +1928,7 @@ export class CategoryController {
 }
 ```
 
-- [ ] **Step 7: Create CategoryModule and register in app.module.ts**
+- [x] **Step 7: Create CategoryModule and register in app.module.ts**
 
 ```typescript
 // src/modules/category/category.module.ts
@@ -1944,18 +1944,20 @@ import { CategoryRepository } from './repositories/category.repository';
 export class CategoryModule {}
 ```
 
-- [ ] **Step 8: Run all tests**
+- [x] **Step 8: Run all tests**
 
 ```bash
 pnpm test
 ```
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/modules/category/
 git commit -m "feat(category): implement category CRUD endpoints"
 ```
+
+> **Status:** ✅ COMPLETE - All 38 tests passing (10 new category + 28 existing), PR #6 opened on `feat/task-11-category`
 
 ---
 

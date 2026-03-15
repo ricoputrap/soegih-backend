@@ -2,6 +2,33 @@
 
 ## [Unreleased]
 
+### Backend — Chunk 4: Category Module (2026-03-15)
+
+**COMPLETE:** Task 11
+
+#### Added
+
+**Task 11: Category Module (DTOs, Repository, Service, Controller)**
+- `CreateCategoryDto` with name, type (CategoryType enum), and optional description validation
+- `UpdateCategoryDto` with all fields optional
+- `CategoryRepository` with scoped queries (`userId` + `deletedAt: null`), create, update, and soft-delete (name timestamping)
+- `CategoryService` with findAll, findOne (NotFoundException), create, update, remove
+- `@Optional()` on PinoLogger injection for testability (matches wallet/auth service pattern)
+- `CategoryController` with 5 endpoints: GET/POST /categories, GET/PATCH/DELETE /categories/:id
+- `CategoryModule` bundling controller, service, and repository
+- Registered CategoryModule in AppModule
+- 10 unit tests (3 repository + 4 service + 3 controller) with full mock coverage
+
+#### Technical Details
+
+- Branch: `feat/task-11-category` | PR: #6
+- Tests: All 38 tests passing (10 new category + 28 existing)
+- TDD approach: Red → Green → Refactor cycle followed
+- Fixture fields use camelCase (`userId`, `createdAt`) matching actual Prisma model
+- Test DTOs use `CategoryType` enum (not string literals with `as any`)
+
+---
+
 ### Backend — Chunk 3: Wallet Module (2026-03-15)
 
 **COMPLETE:** Tasks 8, 9, 10
