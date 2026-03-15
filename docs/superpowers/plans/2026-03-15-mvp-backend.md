@@ -613,210 +613,49 @@ git commit -m "feat(setup): configure global pipes, exception filter, and pino l
 - Create: `src/common/decorators/public.decorator.ts`
 - Create: `src/common/decorators/current-user.decorator.ts`
 
-- [ ] **Step 1: Write tests for JwtAuthGuard**
+- [x] **Step 1: Write tests for JwtAuthGuard**
 
+(Tests created in `src/common/guards/jwt-auth.guard.spec.ts`)
+
+- [x] **Step 2: Run test — expect FAIL**
+
+Result: FAIL — module not found (expected, TDD red phase)
+
+- [x] **Step 3: Implement JwtAuthGuard**
+
+Implementation accepts optional Supabase client for testability:
+- Modified signature: `constructor(reflector: Reflector, supabase?: SupabaseClient)`
+- Extracts Bearer token from request header
+- Validates token with Supabase admin SDK
+- Attaches user to request on success
+
+- [x] **Step 4: Create decorators**
+
+- `@Public()` — metadata-based marker to skip auth on endpoints
+- `@CurrentUser()` — param decorator extracts user from request
+
+- [x] **Step 5: Run tests — expect PASS**
+
+Result: PASS — all 4 tests passing
+- allows public routes without a token ✓
+- throws UnauthorizedException when no token provided ✓
+- throws UnauthorizedException when Supabase returns error ✓
+- attaches user to request when token is valid ✓
+
+- [x] **Step 6: Register guard globally in app.module.ts**
+
+Added to app.module.ts providers:
 ```typescript
-// src/common/guards/jwt-auth.guard.spec.ts
-import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { JwtAuthGuard } from './jwt-auth.guard';
-
-const mockSupabaseGetUser = jest.fn();
-jest.mock('@supabase/supabase-js', () => ({
-  createClient: jest.fn(() => ({
-    auth: { getUser: mockSupabaseGetUser },
-  })),
-}));
-
-function buildContext(
-  authHeader: string | undefined,
-  isPublic = false,
-): ExecutionContext {
-  const reflector = {
-    getAllAndOverride: jest.fn().mockReturnValue(isPublic),
-  } as any;
-  const request = { headers: { authorization: authHeader } };
-  return {
-    switchToHttp: () => ({ getRequest: () => request }),
-    getHandler: jest.fn(),
-    getClass: jest.fn(),
-    _reflector: reflector,
-  } as unknown as ExecutionContext;
-}
-
-describe('JwtAuthGuard', () => {
-  let guard: JwtAuthGuard;
-  let reflector: Reflector;
-
-  beforeEach(() => {
-    reflector = { getAllAndOverride: jest.fn() } as any;
-    guard = new JwtAuthGuard(reflector);
-    jest.clearAllMocks();
-  });
-
-  it('allows public routes without a token', async () => {
-    (reflector.getAllAndOverride as jest.Mock).mockReturnValue(true);
-    const ctx = buildContext(undefined, true);
-    (ctx as any)._reflector = reflector;
-    // Rebuild context to use our reflector
-    const pub = { getAllAndOverride: jest.fn().mockReturnValue(true) } as any;
-    const g = new JwtAuthGuard(pub);
-    const result = await g.canActivate(ctx);
-    expect(result).toBe(true);
-  });
-
-  it('throws UnauthorizedException when no token provided', async () => {
-    (reflector.getAllAndOverride as jest.Mock).mockReturnValue(false);
-    mockSupabaseGetUser.mockResolvedValueOnce({
-      data: { user: null },
-      error: new Error(),
-    });
-    const ctx = buildContext(undefined);
-    await expect(guard.canActivate(ctx)).rejects.toThrow(UnauthorizedException);
-  });
-
-  it('throws UnauthorizedException when Supabase returns error', async () => {
-    (reflector.getAllAndOverride as jest.Mock).mockReturnValue(false);
-    mockSupabaseGetUser.mockResolvedValueOnce({
-      data: { user: null },
-      error: new Error('invalid'),
-    });
-    const ctx = buildContext('Bearer invalid-token');
-    await expect(guard.canActivate(ctx)).rejects.toThrow(UnauthorizedException);
-  });
-
-  it('attaches user to request when token is valid', async () => {
-    (reflector.getAllAndOverride as jest.Mock).mockReturnValue(false);
-    const fakeUser = { id: 'user-uuid', email: 'a@b.com' };
-    mockSupabaseGetUser.mockResolvedValueOnce({
-      data: { user: fakeUser },
-      error: null,
-    });
-    const request: any = { headers: { authorization: 'Bearer valid-token' } };
-    const ctx = {
-      switchToHttp: () => ({ getRequest: () => request }),
-      getHandler: jest.fn(),
-      getClass: jest.fn(),
-    } as unknown as ExecutionContext;
-    const result = await guard.canActivate(ctx);
-    expect(result).toBe(true);
-    expect(request.user).toEqual(fakeUser);
-  });
-});
+{ provide: APP_GUARD, useClass: JwtAuthGuard }
 ```
 
-- [ ] **Step 2: Run test — expect FAIL**
+- [x] **Step 7: Commit**
 
 ```bash
-pnpm test src/common/guards/jwt-auth.guard.spec.ts
+git commit 118874b - feat(auth): implement JWT auth guard and decorators
 ```
 
-- [ ] **Step 3: Implement JwtAuthGuard**
-
-```typescript
-// src/common/guards/jwt-auth.guard.ts
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { createClient } from '@supabase/supabase-js';
-import { Request } from 'express';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-
-@Injectable()
-export class JwtAuthGuard implements CanActivate {
-  private readonly supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } },
-  );
-
-  constructor(private readonly reflector: Reflector) {}
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-    if (isPublic) return true;
-
-    const request = context.switchToHttp().getRequest<Request>();
-    const token = this.extractToken(request);
-    if (!token) throw new UnauthorizedException();
-
-    const {
-      data: { user },
-      error,
-    } = await this.supabase.auth.getUser(token);
-    if (error || !user) throw new UnauthorizedException();
-
-    (request as any).user = user;
-    return true;
-  }
-
-  private extractToken(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
-  }
-}
-```
-
-- [ ] **Step 4: Create decorators**
-
-```typescript
-// src/common/decorators/public.decorator.ts
-import { SetMetadata } from '@nestjs/common';
-
-export const IS_PUBLIC_KEY = 'isPublic';
-export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
-```
-
-```typescript
-// src/common/decorators/current-user.decorator.ts
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-
-export interface AuthUser {
-  id: string;
-  email: string;
-}
-
-export const CurrentUser = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext): AuthUser => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.user as AuthUser;
-  },
-);
-```
-
-- [ ] **Step 5: Run tests — expect PASS**
-
-```bash
-pnpm test src/common/guards/jwt-auth.guard.spec.ts
-```
-
-- [ ] **Step 6: Register guard globally in app.module.ts**
-
-Add to `app.module.ts` providers:
-
-```typescript
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
-
-// In @Module providers array:
-providers: [
-  { provide: APP_GUARD, useClass: JwtAuthGuard },
-],
-```
-
-- [ ] **Step 7: Commit**
-
-```bash
-git add src/common/guards/ src/common/decorators/ src/app.module.ts
-git commit -m "feat(auth): add JWT auth guard and decorators"
-```
+> **Status:** ✅ COMPLETE - All 4 tests passing, guard registered globally, committed
 
 ---
 

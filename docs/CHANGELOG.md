@@ -2,6 +2,28 @@
 
 ## [Unreleased]
 
+### Backend — Chunk 2: Auth Module (2026-03-15)
+
+**COMPLETE:** Task 5
+
+#### Added
+
+**Task 5: JWT Auth Guard + Decorators**
+- JwtAuthGuard for Supabase JWT verification via admin SDK
+- `@Public()` decorator to skip auth on public endpoints
+- `@CurrentUser()` decorator to extract user from request context
+- Guard registered globally via APP_GUARD provider
+- 4 unit tests with full coverage (public routes, missing token, Supabase errors, valid token)
+
+#### Technical Details
+
+- Branch: `feat/task-5-jwt-guard` (feature branch workflow)
+- Commit: `118874b`
+- Tests: All 4 tests passing
+- Testability improvement: Guard accepts optional SupabaseClient parameter for dependency injection
+
+---
+
 ### Backend — Chunk 1: Setup & Infrastructure (2026-03-15)
 
 **COMPLETE:** Tasks 1, 3, 4 | **BLOCKED:** Task 2 (database required)

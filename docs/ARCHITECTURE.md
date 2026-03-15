@@ -37,6 +37,7 @@
 - **HttpExceptionFilter** — Standardized error response format with status_code, message, path, timestamp
 - **ValidationPipe** — Global request validation with whitelist and type transformation
 - **RequestIdInterceptor** — Request tracing via x-request-id header (UUID fallback)
+- **JwtAuthGuard** (Task 5 ✅) — Supabase JWT verification; skipped via @Public() decorator
 - **PrismaModule** — Global database service (auto-connects on init, gracefully disconnects on shutdown)
 - **ConfigModule** — Environment variable management
 - **LoggerModule** (Pino) — Structured logging with request context
