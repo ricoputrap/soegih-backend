@@ -59,11 +59,11 @@ export class DashboardService {
     type Row = { total: string };
     const rows = await this.prisma.$queryRaw<Row[]>`
       SELECT COALESCE(SUM(ABS(p.amount)), 0)::text AS total
-      FROM posting p
-      JOIN transaction_event te ON p.event_id = te.id
-      JOIN wallet w ON p.wallet_id = w.id
-      WHERE w.user_id = ${userId}::uuid
-        AND te.type = ${type}::"TransactionType"
+      FROM postings p
+      JOIN transaction_events te ON p.event_id = te.id
+      JOIN wallets w ON p.wallet_id = w.id
+      WHERE w.user_id = ${userId}
+        AND te.type = ${type}::"transaction_type"
         AND te.occurred_at >= ${start}
         AND te.occurred_at < ${end}
         AND p.deleted_at IS NULL
@@ -84,12 +84,12 @@ export class DashboardService {
         c.id AS category_id,
         c.name AS category_name,
         COALESCE(SUM(ABS(p.amount)), 0)::text AS total
-      FROM posting p
-      JOIN transaction_event te ON p.event_id = te.id
-      JOIN category c ON te.category_id = c.id
-      JOIN wallet w ON p.wallet_id = w.id
-      WHERE w.user_id = ${userId}::uuid
-        AND te.type = 'expense'::"TransactionType"
+      FROM postings p
+      JOIN transaction_events te ON p.event_id = te.id
+      JOIN categories c ON te.category_id = c.id
+      JOIN wallets w ON p.wallet_id = w.id
+      WHERE w.user_id = ${userId}
+        AND te.type = 'expense'::"transaction_type"
         AND te.occurred_at >= ${start}
         AND te.occurred_at < ${end}
         AND p.deleted_at IS NULL
