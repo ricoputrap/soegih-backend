@@ -10,10 +10,8 @@ import { AuthService } from '../services/auth.service';
 import { SignupDto } from '../dtos/signup.dto';
 import { LoginDto } from '../dtos/login.dto';
 import { Public } from '../../../common/decorators/public.decorator';
-import {
-  CurrentUser,
-  AuthUser,
-} from '../../../common/decorators/current-user.decorator';
+import { CurrentUser } from '../../../common/decorators/current-user.decorator';
+import type { AuthUser } from '../../../common/decorators/current-user.decorator';
 
 @Controller('auth')
 export class AuthController {

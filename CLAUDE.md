@@ -130,6 +130,12 @@ nest g class features/wallet/dtos/create-wallet.dto
 - Test coverage should reflect criticality (auth, transactions are high-priority)
 - Run tests before committing
 
+## Node Version
+
+**ALWAYS USE NODE v24. DO NOT DOWNGRADE TO LOWER VERSION.**
+
+Use `nvm use 24` before running any `pnpm` commands.
+
 ## Verification Before Completion
 
 Before committing and pushing work, always run the following 3 commands to verify correctness:

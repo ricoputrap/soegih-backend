@@ -26,7 +26,7 @@ export class AuthService {
   ) {}
 
   async signup(dto: SignupDto): Promise<AuthResult> {
-    const { data, error } = await this.supabase.admin.auth.createUser({
+    const { data, error } = await this.supabase.admin.createUser({
       email: dto.email,
       password: dto.password,
       email_confirm: true,
