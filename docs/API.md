@@ -5,16 +5,13 @@
 
 ## Response Format
 
-All API responses use `snake_case` for JSON field names. Responses follow one of these formats:
+All API responses use `snake_case` for JSON field names. Timestamp fields (`created_at`, `updated_at`, `deleted_at`) are automatically stripped from all responses. Responses follow one of these formats:
 
 **Single Object Response:**
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
-  "email": "user@example.com",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T10:30:00Z",
-  "deleted_at": null
+  "email": "user@example.com"
 }
 ```
 
@@ -23,8 +20,7 @@ All API responses use `snake_case` for JSON field names. Responses follow one of
 [
   {
     "id": "550e8400-e29b-41d4-a716-446655440000",
-    "name": "Cash",
-    "created_at": "2026-03-15T10:30:00Z"
+    "name": "Cash"
   }
 ]
 ```
@@ -203,20 +199,14 @@ Authorization: Bearer <jwt-token>
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Cash",
     "type": "cash",
-    "balance": "1500.50",
-    "created_at": "2026-03-15T10:30:00Z",
-    "updated_at": "2026-03-15T10:30:00Z",
-    "deleted_at": null
+    "balance": "1500.50"
   },
   {
     "id": "a1b2c3d4-e5f6-47g8-h9i0-j1k2l3m4n5o6",
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Bank Account",
     "type": "bank",
-    "balance": "5000.00",
-    "created_at": "2026-03-15T11:00:00Z",
-    "updated_at": "2026-03-15T11:00:00Z",
-    "deleted_at": null
+    "balance": "5000.00"
   }
 ]
 ```
@@ -256,10 +246,7 @@ Content-Type: application/json
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Savings Account",
   "type": "bank",
-  "balance": "10000.00",
-  "created_at": "2026-03-15T12:00:00Z",
-  "updated_at": "2026-03-15T12:00:00Z",
-  "deleted_at": null
+  "balance": "10000.00"
 }
 ```
 
@@ -291,10 +278,7 @@ Authorization: Bearer <jwt-token>
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Cash",
   "type": "cash",
-  "balance": "1500.50",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T10:30:00Z",
-  "deleted_at": null
+  "balance": "1500.50"
 }
 ```
 
@@ -397,20 +381,14 @@ Authorization: Bearer <jwt-token>
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Food",
     "type": "expense",
-    "description": "Groceries and dining",
-    "created_at": "2026-03-15T10:30:00Z",
-    "updated_at": "2026-03-15T10:30:00Z",
-    "deleted_at": null
+    "description": "Groceries and dining"
   },
   {
     "id": "d2e3f4g5-h6i7-48j9-k0l1-m2n3o4p5q6r7",
     "user_id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Salary",
     "type": "income",
-    "description": "Monthly salary income",
-    "created_at": "2026-03-15T11:00:00Z",
-    "updated_at": "2026-03-15T11:00:00Z",
-    "deleted_at": null
+    "description": "Monthly salary income"
   }
 ]
 ```
@@ -450,10 +428,7 @@ Content-Type: application/json
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Transport",
   "type": "expense",
-  "description": "Gas, public transport, taxi",
-  "created_at": "2026-03-15T12:00:00Z",
-  "updated_at": "2026-03-15T12:00:00Z",
-  "deleted_at": null
+  "description": "Gas, public transport, taxi"
 }
 ```
 
@@ -485,10 +460,7 @@ Authorization: Bearer <jwt-token>
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Food",
   "type": "expense",
-  "description": "Groceries and dining",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T10:30:00Z",
-  "deleted_at": null
+  "description": "Groceries and dining"
 }
 ```
 
@@ -530,10 +502,7 @@ Content-Type: application/json
   "user_id": "550e8400-e29b-41d4-a716-446655440000",
   "name": "Groceries",
   "type": "expense",
-  "description": "Supermarket and food shopping",
-  "created_at": "2026-03-15T10:30:00Z",
-  "updated_at": "2026-03-15T13:00:00Z",
-  "deleted_at": null
+  "description": "Supermarket and food shopping"
 }
 ```
 
@@ -604,9 +573,6 @@ List transactions with server-side pagination.
       "note": "Coffee",
       "category_id": "...",
       "occurred_at": "2026-03-15T10:00:00.000Z",
-      "created_at": "2026-03-15T10:00:00.000Z",
-      "updated_at": "2026-03-15T10:00:00.000Z",
-      "deleted_at": null,
       "category": { "id": "...", "name": "Food", "type": "expense" },
       "postings": [
         {
