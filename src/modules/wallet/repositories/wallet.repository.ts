@@ -42,15 +42,56 @@ export class WalletRepository {
   }
 
   async softDelete(id: string): Promise<Wallet> {
-    const { name } = await this.prisma.wallet.findUniqueOrThrow({
-      where: { id },
-    });
-    return this.prisma.wallet.update({
-      where: { id },
-      data: {
-        name: `${name}_${Date.now()}`,
-        deletedAt: new Date(),
-      },
+    return this.prisma.$transaction(async (tx) => {
+      const { name } = await tx.wallet.findUniqueOrThrow({
+        where: { id },
+      });
+
+      // Find all active postings for this wallet
+      const walletPostings = await tx.posting.findMany({
+        where: { walletId: id, deletedAt: null },
+      });
+
+      // Derive unique eventIds
+      const eventIds = Array.from(new Set(walletPostings.map((p) => p.eventId)));
+
+      // For each event, reverse balances and soft-delete
+      for (const eventId of eventIds) {
+        // Get all active postings for this event (includes sibling wallets)
+        const eventPostings = await tx.posting.findMany({
+          where: { eventId, deletedAt: null },
+        });
+
+        // Reverse balance for each wallet in the event
+        for (const posting of eventPostings) {
+          await tx.wallet.update({
+            where: { id: posting.walletId },
+            data: { balance: { decrement: posting.amount } },
+          });
+        }
+
+        // Soft-delete the transaction event
+        const now = new Date();
+        await tx.transactionEvent.update({
+          where: { id: eventId },
+          data: { deletedAt: now },
+        });
+
+        // Soft-delete all postings for this event
+        await tx.posting.updateMany({
+          where: { eventId },
+          data: { deletedAt: now },
+        });
+      }
+
+      // Soft-delete the wallet with name suffix
+      return tx.wallet.update({
+        where: { id },
+        data: {
+          name: `${name}_${Date.now()}`,
+          deletedAt: new Date(),
+        },
+      });
     });
   }
 }
