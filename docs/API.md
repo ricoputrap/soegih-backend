@@ -188,6 +188,23 @@ Authorization: Bearer <jwt-token>
 
 ---
 
+## Authorization & Data Isolation
+
+All authenticated endpoints enforce **per-user data isolation**:
+
+- The JWT token contains the user's unique ID (`user_id`)
+- Every API request validates the token via JwtAuthGuard
+- All database queries are scoped to the authenticated user
+- Attempting to access another user's data returns `404 Not Found`
+- No endpoint returns cross-user data
+
+**For example:**
+- `GET /api/v1/wallets` returns only the authenticated user's wallets
+- `PATCH /api/v1/wallets/abc-123` fails with `404` if wallet `abc-123` belongs to a different user
+- `GET /api/v1/transactions?month=2026-03` shows only transactions for the authenticated user
+
+---
+
 ## Wallets
 
 Wallets represent accounts where money is stored (cash, bank, e-wallet, etc.).

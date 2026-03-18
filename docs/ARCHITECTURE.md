@@ -37,7 +37,7 @@
 - **HttpExceptionFilter** — Standardized error response format with status_code, message, path, timestamp
 - **ValidationPipe** — Global request validation with whitelist and type transformation
 - **RequestIdInterceptor** — Request tracing via x-request-id header (UUID fallback)
-- **JwtAuthGuard** (Task 5 ✅) — Supabase JWT verification; skipped via @Public() decorator
+- **JwtAuthGuard** (Task 5 ✅) — Supabase JWT verification with automatic `user_id` extraction. All protected endpoints enforce per-user query scoping. Public endpoints marked with `@Public()` decorator (auth module only)
 - **SupabaseService** (Task 6 ✅) — Injectable Supabase admin client for auth operations
 - **PrismaModule** — Global database service (auto-connects on init, gracefully disconnects on shutdown)
 - **ConfigModule** — Environment variable management

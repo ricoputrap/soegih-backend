@@ -8,7 +8,7 @@ DATE: Thursday, 12 March 2026
 
 ### 1. Who is the product for?
 
-For the MVP, this is a single-user personal finance app built for the developer's own use. In future development phases, it will be shipped as a public paid SaaS product. Architecture decisions should avoid hard-coding single-user assumptions where it doesn't cost extra effort.
+For the MVP, this is a personal finance app built for the developer's own use. The architecture is built **multi-user from the ground up** with per-user JWT authentication, query scoping, and no hardcoded single-user assumptions. In future development phases, it will be shipped as a public paid SaaS product without requiring rearchitecture.
 
 ### 2. What problems does it solve?
 
@@ -160,6 +160,15 @@ Frontend → Authorization: Bearer <token> → NestJS JWT guard
                                     Extract user_id from claims
                                     Scope all queries by user_id
 ```
+
+**Critical: User-Scoped Queries**
+
+Every database query is scoped by the authenticated user's ID:
+- JwtAuthGuard extracts `user_id` from JWT claims on every request
+- `@CurrentUser()` decorator passes `user_id` to all protected endpoints
+- Services enforce user_id scoping at the repository layer (WHERE user_id = ?)
+- Attempting to access another user's wallet, category, or transaction returns `404 Not Found`
+- No endpoint returns data across users
 
 **Frontend responsibilities:**
 
